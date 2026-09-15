@@ -18,11 +18,9 @@ import {
   Trash2,
   X,
   FileText,
-  Sparkles,
   Loader2,
   AlertCircle,
   Video,
-  CheckCircle2,
 } from 'lucide-react';
 import {
   usePlannerStore,
@@ -41,66 +39,66 @@ const STATUS_CONFIG: Record<
 > = {
   not_started: {
     label: 'Not Started',
-    bg: 'bg-neutral-100',
-    text: 'text-neutral-700',
-    border: 'border-neutral-200',
-    dot: 'bg-neutral-400',
+    bg: 'bg-[#181818]',
+    text: 'text-neutral-400',
+    border: 'border-[#262626]',
+    dot: 'bg-neutral-500',
   },
   scripting: {
     label: 'Scripting',
-    bg: 'bg-indigo-50',
-    text: 'text-indigo-700',
-    border: 'border-indigo-200',
+    bg: 'bg-[#16142a]',
+    text: 'text-indigo-300',
+    border: 'border-[#292452]',
     dot: 'bg-indigo-500',
   },
   recording: {
     label: 'Recording',
-    bg: 'bg-rose-50',
-    text: 'text-rose-700',
-    border: 'border-rose-200',
+    bg: 'bg-[#241317]',
+    text: 'text-rose-300',
+    border: 'border-[#441d27]',
     dot: 'bg-rose-500',
   },
   editing: {
     label: 'Editing',
-    bg: 'bg-amber-50',
-    text: 'text-amber-800',
-    border: 'border-amber-200',
+    bg: 'bg-[#241a0d]',
+    text: 'text-amber-300',
+    border: 'border-[#463116]',
     dot: 'bg-amber-500',
   },
   ready: {
     label: 'Ready',
-    bg: 'bg-emerald-50',
-    text: 'text-emerald-800',
-    border: 'border-emerald-200',
+    bg: 'bg-[#0e2114]',
+    text: 'text-emerald-300',
+    border: 'border-[#1b4329]',
     dot: 'bg-emerald-500',
   },
   published: {
     label: 'Published',
-    bg: 'bg-brand-50',
-    text: 'text-brand-800',
-    border: 'border-brand-200',
-    dot: 'bg-brand-600',
+    bg: 'bg-[#131b2b]',
+    text: 'text-blue-300',
+    border: 'border-[#223352]',
+    dot: 'bg-blue-500',
   },
   in_progress: {
     label: 'In Progress',
-    bg: 'bg-blue-50',
-    text: 'text-blue-700',
-    border: 'border-blue-200',
-    dot: 'bg-blue-500',
+    bg: 'bg-[#161d2d]',
+    text: 'text-blue-300',
+    border: 'border-[#233554]',
+    dot: 'bg-blue-400',
   },
   scripted: {
     label: 'Scripted',
-    bg: 'bg-purple-50',
-    text: 'text-purple-700',
-    border: 'border-purple-200',
-    dot: 'bg-purple-500',
+    bg: 'bg-[#1b152d]',
+    text: 'text-purple-300',
+    border: 'border-[#332454]',
+    dot: 'bg-purple-400',
   },
   skipped: {
     label: 'Skipped',
-    bg: 'bg-neutral-100',
+    bg: 'bg-[#141414]',
     text: 'text-neutral-500',
-    border: 'border-neutral-200',
-    dot: 'bg-neutral-300',
+    border: 'border-[#222222]',
+    dot: 'bg-neutral-600',
   },
 };
 
@@ -140,7 +138,6 @@ export const PlannerPage: React.FC = () => {
     clearError,
   } = usePlannerStore();
 
-  // Create Modal State
   const [isCreateOpen, setIsCreateOpen] = useState(false);
   const [createTopic, setCreateTopic] = useState('');
   const [createScheduledAt, setCreateScheduledAt] = useState('');
@@ -148,7 +145,6 @@ export const PlannerPage: React.FC = () => {
   const [createNotes, setCreateNotes] = useState('');
   const [isCreating, setIsCreating] = useState(false);
 
-  // Edit / Details Modal State
   const [selectedSlot, setSelectedSlot] = useState<PlannerSlot | null>(null);
   const [editTopic, setEditTopic] = useState('');
   const [editScheduledAt, setEditScheduledAt] = useState('');
@@ -157,12 +153,10 @@ export const PlannerPage: React.FC = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // Initial load
   useEffect(() => {
     void fetchSlots();
   }, [fetchSlots]);
 
-  // Compute Calendar Grid Days
   const calendarDays = useMemo(() => {
     const monthStart = startOfMonth(currentDate);
     const monthEnd = endOfMonth(monthStart);
@@ -171,7 +165,6 @@ export const PlannerPage: React.FC = () => {
     return eachDayOfInterval({ start: startDate, end: endDate });
   }, [currentDate]);
 
-  // Pipeline summary statistics
   const statusCounts = useMemo(() => {
     const counts: Record<string, number> = {
       scripting: 0,
@@ -188,7 +181,6 @@ export const PlannerPage: React.FC = () => {
     return counts;
   }, [slots]);
 
-  // Handlers for Opening Modals
   const handleOpenCreateModal = (initialDate?: Date) => {
     const targetDate = initialDate ? new Date(initialDate) : new Date();
     if (initialDate) {
@@ -214,7 +206,6 @@ export const PlannerPage: React.FC = () => {
     setEditNotes(slot.notes || '');
   };
 
-  // Create Slot Submission
   const handleCreateSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!createTopic.trim() || !createScheduledAt) return;
@@ -234,7 +225,6 @@ export const PlannerPage: React.FC = () => {
     }
   };
 
-  // Update Slot Submission
   const handleUpdateSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedSlot || !editTopic.trim() || !editScheduledAt) return;
@@ -254,7 +244,6 @@ export const PlannerPage: React.FC = () => {
     }
   };
 
-  // Delete Slot Handler
   const handleDeleteSlot = async () => {
     if (!selectedSlot) return;
     if (!window.confirm(`Are you sure you want to remove "${selectedSlot.topic}" from your planner?`)) {
@@ -271,74 +260,71 @@ export const PlannerPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 pb-8 animate-in">
+    <div className="space-y-6 pb-8 animate-in text-[#ededed]">
       <PageHeader
         title="Content Planner"
-        description="Schedule, track, and coordinate upcoming video content across lifecycle stages."
+        description="Schedule, coordinate and execute video production across lifecycle pipeline stages."
         actions={
-          <div className="flex flex-wrap items-center gap-3">
-            {/* Month Navigator Chevrons */}
-            <div className="flex items-center rounded-lg border border-neutral-200 bg-white shadow-sm">
+          <div className="flex flex-wrap items-center gap-2.5">
+            {/* Month Navigator */}
+            <div className="flex items-center rounded-lg border border-[#262626] bg-[#141414]">
               <button
                 type="button"
                 onClick={prevMonth}
                 title="Previous Month"
-                className="p-2 text-neutral-500 hover:bg-neutral-50 hover:text-neutral-800 transition-colors rounded-l-lg"
+                className="p-1.5 text-neutral-400 hover:bg-[#1f1f1f] hover:text-white transition-colors rounded-l-lg cursor-pointer"
               >
                 <ChevronLeft className="h-4 w-4" />
               </button>
-              <span className="min-w-[130px] px-3 text-center text-sm font-semibold text-neutral-900 select-none">
+              <span className="min-w-[120px] px-2 text-center text-xs font-semibold text-white select-none">
                 {format(currentDate, 'MMMM yyyy')}
               </span>
               <button
                 type="button"
                 onClick={nextMonth}
                 title="Next Month"
-                className="p-2 text-neutral-500 hover:bg-neutral-50 hover:text-neutral-800 transition-colors rounded-r-lg"
+                className="p-1.5 text-neutral-400 hover:bg-[#1f1f1f] hover:text-white transition-colors rounded-r-lg cursor-pointer"
               >
                 <ChevronRight className="h-4 w-4" />
               </button>
             </div>
 
-            {/* Quick jump to Today */}
             <Button
               type="button"
               variant="secondary"
               size="sm"
               onClick={() => setCurrentDate(new Date())}
-              className="text-xs"
+              className="text-xs h-8"
             >
               Today
             </Button>
 
-            {/* Add Video Slot Button */}
-            <Button type="button" onClick={() => handleOpenCreateModal()} className="gap-2">
-              <Plus className="h-4 w-4" />
-              Add Video Slot
+            <Button type="button" onClick={() => handleOpenCreateModal()} size="sm" className="gap-1.5 text-xs h-8">
+              <Plus className="h-3.5 w-3.5" />
+              Add Slot
             </Button>
           </div>
         }
       />
 
-      {/* Offline/Error Notification Banner */}
       {error && (
-        <div className="flex items-center justify-between rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+        <div className="flex items-center justify-between rounded-lg border border-[#4a2e0e] bg-[#221405] p-3 text-xs text-amber-300">
           <div className="flex items-center gap-2">
-            <AlertCircle className="h-4 w-4 text-amber-600 shrink-0" />
+            <AlertCircle className="h-4 w-4 text-amber-400 shrink-0" />
             <span>{error}</span>
           </div>
           <button
             type="button"
             onClick={clearError}
-            className="text-amber-600 hover:text-amber-900 text-xs font-medium"
+            className="text-amber-400 hover:text-white text-xs font-medium cursor-pointer"
           >
             Dismiss
           </button>
         </div>
       )}
 
-      {/* Lifecycle Stage Pipeline Summary Cards */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
+      {/* Pipeline Summary Cards */}
+      <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-5">
         {(['scripting', 'recording', 'editing', 'ready', 'published'] as SlotLifecycleStatus[]).map(
           (statusKey) => {
             const config = STATUS_CONFIG[statusKey];
@@ -346,13 +332,13 @@ export const PlannerPage: React.FC = () => {
             return (
               <div
                 key={statusKey}
-                className="flex items-center justify-between rounded-lg border border-neutral-200 bg-white p-3 shadow-xs"
+                className="flex items-center justify-between rounded-lg border border-[#222222] bg-[#121212] p-3"
               >
                 <div className="flex items-center gap-2">
-                  <span className={`h-2.5 w-2.5 rounded-full ${config.dot}`} />
-                  <span className="text-xs font-medium text-neutral-600">{config.label}</span>
+                  <span className={`h-2 w-2 rounded-full ${config.dot}`} />
+                  <span className="text-xs font-medium text-neutral-300">{config.label}</span>
                 </div>
-                <span className="text-sm font-bold text-neutral-900">{count}</span>
+                <span className="text-sm font-bold text-white metric">{count}</span>
               </div>
             );
           }
@@ -360,31 +346,30 @@ export const PlannerPage: React.FC = () => {
       </div>
 
       {/* Main Calendar View */}
-      <Card padding="none" className="overflow-hidden border border-neutral-200 shadow-sm">
-        {/* Loading overlay indicator */}
+      <Card padding="none" className="overflow-hidden border border-[#222222] bg-[#101010]">
         {isLoading && (
-          <div className="flex items-center justify-center gap-2 bg-neutral-50/80 py-2 border-b border-neutral-200 text-xs text-neutral-600">
-            <Loader2 className="h-3.5 w-3.5 animate-spin text-brand-600" />
-            <span>Updating planner slots...</span>
+          <div className="flex items-center justify-center gap-2 bg-[#141414] py-1.5 border-b border-[#222222] text-xs text-neutral-400">
+            <Loader2 className="h-3 w-3 animate-spin text-white" />
+            <span>Syncing calendar slots...</span>
           </div>
         )}
 
         <div className="overflow-x-auto">
           <div className="min-w-[760px]">
-            {/* Day of Week Header */}
-            <div className="grid grid-cols-7 border-b border-neutral-200 bg-neutral-50/80">
+            {/* Header */}
+            <div className="grid grid-cols-7 border-b border-[#1f1f1f] bg-[#141414]">
               {DAYS_OF_WEEK.map((day) => (
                 <div
                   key={day}
-                  className="border-r border-neutral-200/80 py-2.5 text-center text-xs font-semibold text-neutral-500 last:border-r-0"
+                  className="border-r border-[#1f1f1f] py-2 text-center text-xs font-semibold text-neutral-400 last:border-r-0"
                 >
                   {day}
                 </div>
               ))}
             </div>
 
-            {/* Calendar Grid Cells */}
-            <div className="grid grid-cols-7 divide-y divide-neutral-200/80 bg-neutral-100/50">
+            {/* Calendar Days */}
+            <div className="grid grid-cols-7 divide-y divide-[#1e1e1e] bg-[#0c0c0c]">
               {calendarDays.map((day, idx) => {
                 const isCurrentMonth = isSameMonth(day, currentDate);
                 const isDayToday = isToday(day);
@@ -400,23 +385,22 @@ export const PlannerPage: React.FC = () => {
                   <div
                     key={idx}
                     onClick={() => handleOpenCreateModal(day)}
-                    className={`group relative min-h-[115px] p-2 transition-colors border-r border-neutral-200/80 last:border-r-0 cursor-pointer ${
+                    className={`group relative min-h-[110px] p-2 transition-colors border-r border-[#1e1e1e] last:border-r-0 cursor-pointer ${
                       !isCurrentMonth
-                        ? 'bg-neutral-50/50 text-neutral-400'
+                        ? 'bg-[#0a0a0a] text-neutral-600'
                         : isDayToday
-                        ? 'bg-brand-50/25 ring-1 ring-inset ring-brand-500/20'
-                        : 'bg-white hover:bg-neutral-50/80'
+                        ? 'bg-[#151426] border-indigo-500/30'
+                        : 'bg-[#111111] hover:bg-[#161616]'
                     }`}
                   >
-                    {/* Header: Date Number & Hover Add Button */}
                     <div className="flex items-center justify-between">
                       <span
                         className={`text-xs font-semibold inline-flex items-center justify-center ${
                           isDayToday
-                            ? 'h-6 w-6 rounded-full bg-brand-600 text-white font-bold shadow-xs'
+                            ? 'h-5 w-5 rounded-full bg-white text-black font-bold'
                             : isCurrentMonth
-                            ? 'text-neutral-700'
-                            : 'text-neutral-300'
+                            ? 'text-neutral-300'
+                            : 'text-neutral-600'
                         }`}
                       >
                         {format(day, 'd')}
@@ -428,14 +412,12 @@ export const PlannerPage: React.FC = () => {
                           e.stopPropagation();
                           handleOpenCreateModal(day);
                         }}
-                        title={`Schedule video on ${format(day, 'MMM d')}`}
-                        className="opacity-0 group-hover:opacity-100 p-1 text-neutral-400 hover:text-brand-600 hover:bg-brand-50 rounded transition-all"
+                        className="opacity-0 group-hover:opacity-100 p-0.5 text-neutral-400 hover:text-white rounded transition-all cursor-pointer"
                       >
-                        <Plus className="h-3.5 w-3.5" />
+                        <Plus className="h-3 w-3" />
                       </button>
                     </div>
 
-                    {/* Day Slots List */}
                     <div className="mt-1.5 space-y-1">
                       {daySlots.slice(0, 3).map((slot) => {
                         const config = STATUS_CONFIG[slot.status] || STATUS_CONFIG.not_started;
@@ -444,16 +426,16 @@ export const PlannerPage: React.FC = () => {
                             key={slot.id}
                             onClick={(e) => handleOpenEditModal(slot, e)}
                             title={`${slot.topic} (${config.label})`}
-                            className={`flex items-center gap-1.5 rounded-md px-2 py-1 text-xs font-medium border shadow-2xs truncate transition-transform hover:scale-[1.02] cursor-pointer ${config.bg} ${config.text} ${config.border}`}
+                            className={`flex items-center gap-1.5 rounded px-1.5 py-0.5 text-[11px] font-medium border truncate transition-transform hover:scale-[1.01] cursor-pointer ${config.bg} ${config.text} ${config.border}`}
                           >
                             <span className={`h-1.5 w-1.5 rounded-full shrink-0 ${config.dot}`} />
-                            <span className="truncate flex-1 font-medium">{slot.topic}</span>
+                            <span className="truncate flex-1">{slot.topic}</span>
                           </div>
                         );
                       })}
 
                       {daySlots.length > 3 && (
-                        <div className="text-[11px] font-medium text-neutral-500 pl-1">
+                        <div className="text-[10px] font-medium text-neutral-500 pl-1">
                           +{daySlots.length - 3} more
                         </div>
                       )}
@@ -466,64 +448,64 @@ export const PlannerPage: React.FC = () => {
         </div>
       </Card>
 
-      {/* MODAL 1: Create Video Slot Modal */}
+      {/* Create Modal */}
       {isCreateOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-xs animate-in fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-xs animate-in">
           <div
-            className="w-full max-w-md rounded-xl bg-white p-6 shadow-2xl border border-neutral-200 animate-in zoom-in-95"
+            className="w-full max-w-md rounded-xl bg-[#141414] p-6 shadow-2xl border border-[#2a2a2a]"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between pb-3 border-b border-neutral-100">
+            <div className="flex items-center justify-between pb-3 border-b border-[#222222]">
               <div className="flex items-center gap-2">
-                <Video className="h-5 w-5 text-brand-600" />
-                <h3 className="text-base font-semibold text-neutral-900">Schedule Video Slot</h3>
+                <Video className="h-4 w-4 text-white" />
+                <h3 className="text-sm font-bold text-white">Schedule Video Slot</h3>
               </div>
               <button
                 type="button"
                 onClick={() => setIsCreateOpen(false)}
-                className="p-1 text-neutral-400 hover:text-neutral-700 rounded-md hover:bg-neutral-100"
+                className="p-1 text-neutral-500 hover:text-white rounded cursor-pointer"
               >
                 <X className="h-4 w-4" />
               </button>
             </div>
 
-            <form onSubmit={handleCreateSubmit} className="mt-4 space-y-4">
+            <form onSubmit={handleCreateSubmit} className="mt-4 space-y-3.5">
               <div>
-                <label className="block text-xs font-medium text-neutral-700 mb-1">
-                  Video Topic / Title <span className="text-red-500">*</span>
+                <label className="block text-xs font-medium text-neutral-300 mb-1">
+                  Video Topic / Title *
                 </label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Next.js 15 Full Tutorial & Codebase"
+                  placeholder="e.g. Next.js 15 Full Tutorial"
                   value={createTopic}
                   onChange={(e) => setCreateTopic(e.target.value)}
-                  className="h-9 w-full rounded-lg border border-neutral-200 bg-white px-3 text-sm text-neutral-900 placeholder:text-neutral-400 focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/10"
+                  className="h-9 w-full rounded-lg border border-[#282828] bg-[#161616] px-3 text-xs text-[#ededed] placeholder-neutral-500 focus:border-[#4f46e5] focus:outline-none"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-neutral-700 mb-1">
-                    Scheduled Date & Time <span className="text-red-500">*</span>
+                  <label className="block text-xs font-medium text-neutral-300 mb-1">
+                    Scheduled Date & Time *
                   </label>
                   <input
                     type="datetime-local"
                     required
                     value={createScheduledAt}
                     onChange={(e) => setCreateScheduledAt(e.target.value)}
-                    className="h-9 w-full rounded-lg border border-neutral-200 bg-white px-2.5 text-xs text-neutral-900 focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/10"
+                    className="h-9 w-full rounded-lg border border-[#282828] bg-[#161616] px-2.5 text-xs text-[#ededed] focus:border-[#4f46e5] focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-neutral-700 mb-1">
-                    Lifecycle Status
+                  <label className="block text-xs font-medium text-neutral-300 mb-1">
+                    Status
                   </label>
                   <select
                     value={createStatus}
                     onChange={(e) => setCreateStatus(e.target.value as SlotLifecycleStatus)}
-                    className="h-9 w-full rounded-lg border border-neutral-200 bg-white px-2.5 text-xs text-neutral-900 focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/10"
+                    className="h-9 w-full rounded-lg border border-[#282828] bg-[#161616] px-2.5 text-xs text-[#ededed] focus:border-[#4f46e5] focus:outline-none cursor-pointer"
                   >
                     {SELECTABLE_STATUSES.map((statusKey) => (
                       <option key={statusKey} value={statusKey}>
@@ -535,19 +517,19 @@ export const PlannerPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-neutral-700 mb-1">
-                  Notes / Hook / Keywords (Optional)
+                <label className="block text-xs font-medium text-neutral-300 mb-1">
+                  Notes (Optional)
                 </label>
                 <textarea
                   rows={3}
-                  placeholder="Draft hook, angle, thumbnail ideas, or SEO tags..."
+                  placeholder="Draft hook, angle, or SEO tags..."
                   value={createNotes}
                   onChange={(e) => setCreateNotes(e.target.value)}
-                  className="w-full rounded-lg border border-neutral-200 bg-white p-2.5 text-xs text-neutral-900 placeholder:text-neutral-400 focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/10"
+                  className="w-full rounded-lg border border-[#282828] bg-[#161616] p-2.5 text-xs text-[#ededed] placeholder-neutral-500 focus:border-[#4f46e5] focus:outline-none"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-neutral-100">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#222222]">
                 <Button
                   type="button"
                   variant="secondary"
@@ -557,14 +539,7 @@ export const PlannerPage: React.FC = () => {
                   Cancel
                 </Button>
                 <Button type="submit" size="sm" disabled={isCreating || !createTopic.trim()}>
-                  {isCreating ? (
-                    <>
-                      <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" />
-                      Adding...
-                    </>
-                  ) : (
-                    'Add to Planner'
-                  )}
+                  {isCreating ? 'Adding...' : 'Add to Planner'}
                 </Button>
               </div>
             </form>
@@ -572,62 +547,44 @@ export const PlannerPage: React.FC = () => {
         </div>
       )}
 
-      {/* MODAL 2: Slot Details / Edit / Delete Modal */}
+      {/* Edit Modal */}
       {selectedSlot && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-xs animate-in fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-xs animate-in">
           <div
-            className="w-full max-w-lg rounded-xl bg-white p-6 shadow-2xl border border-neutral-200 animate-in zoom-in-95"
+            className="w-full max-w-lg rounded-xl bg-[#141414] p-6 shadow-2xl border border-[#2a2a2a]"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between pb-3 border-b border-neutral-100">
+            <div className="flex items-center justify-between pb-3 border-b border-[#222222]">
               <div className="flex items-center gap-2">
-                <FileText className="h-5 w-5 text-brand-600" />
-                <h3 className="text-base font-semibold text-neutral-900">Slot Details & Status</h3>
+                <FileText className="h-4 w-4 text-white" />
+                <h3 className="text-sm font-bold text-white">Slot Details & Status</h3>
               </div>
               <button
                 type="button"
                 onClick={() => setSelectedSlot(null)}
-                className="p-1 text-neutral-400 hover:text-neutral-700 rounded-md hover:bg-neutral-100"
+                className="p-1 text-neutral-500 hover:text-white rounded cursor-pointer"
               >
                 <X className="h-4 w-4" />
               </button>
             </div>
 
-            {/* Strategy / Trend link indicator */}
-            {(selectedSlot.strategy_session_id || selectedSlot.trend_id) && (
-              <div className="mt-3 flex flex-wrap items-center gap-2">
-                {selectedSlot.strategy_session_id && (
-                  <span className="inline-flex items-center gap-1 rounded-md bg-purple-50 px-2 py-0.5 text-xs font-medium text-purple-700 border border-purple-200">
-                    <Sparkles className="h-3 w-3" />
-                    Linked to Strategy Brief
-                  </span>
-                )}
-                {selectedSlot.trend_id && (
-                  <span className="inline-flex items-center gap-1 rounded-md bg-blue-50 px-2 py-0.5 text-xs font-medium text-blue-700 border border-blue-200">
-                    <CheckCircle2 className="h-3 w-3" />
-                    Linked to Trend
-                  </span>
-                )}
-              </div>
-            )}
-
-            <form onSubmit={handleUpdateSubmit} className="mt-4 space-y-4">
+            <form onSubmit={handleUpdateSubmit} className="mt-4 space-y-3.5">
               <div>
-                <label className="block text-xs font-medium text-neutral-700 mb-1">
-                  Video Topic / Title <span className="text-red-500">*</span>
+                <label className="block text-xs font-medium text-neutral-300 mb-1">
+                  Video Topic / Title *
                 </label>
                 <input
                   type="text"
                   required
                   value={editTopic}
                   onChange={(e) => setEditTopic(e.target.value)}
-                  className="h-9 w-full rounded-lg border border-neutral-200 bg-white px-3 text-sm text-neutral-900 focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/10"
+                  className="h-9 w-full rounded-lg border border-[#282828] bg-[#161616] px-3 text-xs text-[#ededed] focus:border-[#4f46e5] focus:outline-none"
                 />
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-neutral-700 mb-1">
+                  <label className="block text-xs font-medium text-neutral-300 mb-1">
                     Scheduled Date & Time
                   </label>
                   <input
@@ -635,18 +592,18 @@ export const PlannerPage: React.FC = () => {
                     required
                     value={editScheduledAt}
                     onChange={(e) => setEditScheduledAt(e.target.value)}
-                    className="h-9 w-full rounded-lg border border-neutral-200 bg-white px-2.5 text-xs text-neutral-900 focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/10"
+                    className="h-9 w-full rounded-lg border border-[#282828] bg-[#161616] px-2.5 text-xs text-[#ededed] focus:border-[#4f46e5] focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-neutral-700 mb-1">
+                  <label className="block text-xs font-medium text-neutral-300 mb-1">
                     Lifecycle Status
                   </label>
                   <select
                     value={editStatus}
                     onChange={(e) => setEditStatus(e.target.value as SlotLifecycleStatus)}
-                    className="h-9 w-full rounded-lg border border-neutral-200 bg-white px-2.5 text-xs text-neutral-900 focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/10"
+                    className="h-9 w-full rounded-lg border border-[#282828] bg-[#161616] px-2.5 text-xs text-[#ededed] focus:border-[#4f46e5] focus:outline-none cursor-pointer"
                   >
                     {SELECTABLE_STATUSES.map((statusKey) => (
                       <option key={statusKey} value={statusKey}>
@@ -658,30 +615,25 @@ export const PlannerPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-neutral-700 mb-1">
+                <label className="block text-xs font-medium text-neutral-300 mb-1">
                   Notes / Hook / Keywords
                 </label>
                 <textarea
                   rows={3}
                   value={editNotes}
                   onChange={(e) => setEditNotes(e.target.value)}
-                  placeholder="Outline notes, hook ideas, or tags..."
-                  className="w-full rounded-lg border border-neutral-200 bg-white p-2.5 text-xs text-neutral-900 placeholder:text-neutral-400 focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/10"
+                  className="w-full rounded-lg border border-[#282828] bg-[#161616] p-2.5 text-xs text-[#ededed] placeholder-neutral-500 focus:border-[#4f46e5] focus:outline-none"
                 />
               </div>
 
-              <div className="flex items-center justify-between pt-3 border-t border-neutral-100">
+              <div className="flex items-center justify-between pt-3 border-t border-[#222222]">
                 <button
                   type="button"
                   onClick={handleDeleteSlot}
                   disabled={isDeleting}
-                  className="inline-flex items-center gap-1 text-xs font-medium text-rose-600 hover:text-rose-800 disabled:opacity-50"
+                  className="inline-flex items-center gap-1 text-xs font-medium text-rose-400 hover:text-rose-300 cursor-pointer disabled:opacity-50"
                 >
-                  {isDeleting ? (
-                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                  ) : (
-                    <Trash2 className="h-3.5 w-3.5" />
-                  )}
+                  <Trash2 className="h-3.5 w-3.5" />
                   Delete Slot
                 </button>
 
@@ -695,14 +647,7 @@ export const PlannerPage: React.FC = () => {
                     Close
                   </Button>
                   <Button type="submit" size="sm" disabled={isUpdating || !editTopic.trim()}>
-                    {isUpdating ? (
-                      <>
-                        <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" />
-                        Saving...
-                      </>
-                    ) : (
-                      'Save Changes'
-                    )}
+                    {isUpdating ? 'Saving...' : 'Save Changes'}
                   </Button>
                 </div>
               </div>

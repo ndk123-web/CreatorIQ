@@ -194,21 +194,21 @@ export const StrategyPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6 pb-6 animate-in">
+    <div className="space-y-6 pb-6 animate-in text-[#ededed]">
       <PageHeader
-        title={<span className="text-gradient-brand">Strategy</span>}
-        description="Generate a data-backed content brief grounded in your channel profile."
+        title="Content Strategy Suite"
+        description="Generate a data-backed creator intelligence brief grounded in your channel context and live search demand."
       />
 
       {error && <Alert variant="error">{error}</Alert>}
 
       {scheduleSuccess && (
-        <div className="flex items-center justify-between gap-3 rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800 animate-in fade-in">
+        <div className="flex items-center justify-between gap-3 rounded-lg border border-[#166534] bg-[#0e2316] p-4 text-xs text-emerald-300 animate-in">
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0" />
+            <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
             <div>
-              <p className="font-semibold">Slot scheduled in Content Planner!</p>
-              <p className="text-xs text-emerald-700 mt-0.5">
+              <p className="font-semibold text-emerald-200">Slot scheduled in Content Planner!</p>
+              <p className="text-[11px] text-emerald-400 mt-0.5">
                 Your video slot has been added to the calendar linked to this strategy session.
               </p>
             </div>
@@ -217,18 +217,18 @@ export const StrategyPage: React.FC = () => {
             <Button
               size="sm"
               onClick={() => navigate('/app/planner')}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs text-xs"
+              className="text-xs h-7"
             >
-              <Calendar className="mr-1.5 h-3.5 w-3.5" />
+              <Calendar className="mr-1.5 h-3 w-3" />
               Open Planner
             </Button>
             <button
               type="button"
               onClick={() => setScheduleSuccess(false)}
-              className="p-1 text-emerald-600 hover:text-emerald-900 rounded-md hover:bg-emerald-100"
+              className="p-1 text-emerald-400 hover:text-emerald-200 rounded cursor-pointer"
               title="Dismiss"
             >
-              <X className="h-4 w-4" />
+              <X className="h-3.5 w-3.5" />
             </button>
           </div>
         </div>
@@ -236,26 +236,26 @@ export const StrategyPage: React.FC = () => {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
         <div className="space-y-4 lg:col-span-4">
-          <Card variant="elevated" className="space-y-4">
+          <Card variant="elevated" className="space-y-4 border-[#242424] bg-[#121212] p-5">
             <div>
-              <label className="text-xs font-medium text-neutral-500">Target topic</label>
+              <label className="text-xs font-medium text-neutral-400">Target Concept Topic</label>
               <div className="mt-1.5">
                 <Input
-                  icon={<Lightbulb className="h-4 w-4" />}
+                  icon={<Lightbulb className="h-4 w-4 text-neutral-500" />}
                   value={topic}
                   onChange={(e) => setTopic(e.target.value)}
-                  placeholder="e.g. comedy shorts trends"
+                  placeholder="e.g. AI Coding Agents in 2026"
                 />
               </div>
             </div>
             <div>
-              <label className="text-xs font-medium text-neutral-500">Primary goal</label>
+              <label className="text-xs font-medium text-neutral-400">Primary Goal</label>
               <div className="relative mt-1.5">
-                <Target className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
+                <Target className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-500" />
                 <select
                   value={goal}
                   onChange={(e) => setGoal(e.target.value)}
-                  className="h-9 w-full appearance-none rounded-lg border border-neutral-200 bg-white pl-9 pr-3 text-sm focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/10"
+                  className="h-9 w-full appearance-none rounded-lg border border-[#282828] bg-[#141414] pl-9 pr-3 text-xs text-[#ededed] focus:border-[#4f46e5] focus:outline-none cursor-pointer"
                 >
                   <option value="Max engagement">Max engagement</option>
                   <option value="Audience growth">Audience growth</option>
@@ -271,111 +271,126 @@ export const StrategyPage: React.FC = () => {
               }}
               disabled={isLoading || !sanitizeStrategyTopic(topic)}
             >
-              {isLoading ? 'Generating...' : 'Generate strategy'}
+              {isLoading ? 'Generating brief...' : 'Generate Strategy Brief'}
             </Button>
           </Card>
 
-          <Card variant="dark">
-            <Sparkles className="h-4 w-4 text-brand-300" />
-            <h3 className="mt-3 text-sm font-medium">AI advantage</h3>
-            <p className="mt-2 text-sm text-neutral-400">
-              Strategies use your real niche data and channel context via OpenRouter.
+          <Card variant="default" className="border-[#222222] bg-[#121212] p-4">
+            <div className="flex items-center gap-2">
+              <Sparkles className="h-4 w-4 text-indigo-400" />
+              <h3 className="text-xs font-semibold text-neutral-300">Creator Intelligence</h3>
+            </div>
+            <p className="mt-2 text-xs leading-relaxed text-neutral-400">
+              Generated briefs synthesize your live audience geography, creator tier and keyword velocities via OpenRouter AI.
             </p>
           </Card>
         </div>
 
         <div className="lg:col-span-8">
           {!brief ? (
-            <Card variant="elevated" className="flex min-h-[320px] flex-col items-center justify-center border-dashed border-brand-200/50 text-center">
-              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-brand-50 ring-1 ring-brand-200/50 text-brand-600">
-                <Brain className="h-6 w-6" />
+            <Card variant="elevated" className="flex min-h-[320px] flex-col items-center justify-center border-dashed border-[#282828] bg-[#101010] text-center p-8">
+              <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-[#181818] border border-[#2a2a2a] text-neutral-400">
+                <Brain className="h-5 w-5" />
               </div>
-              <h3 className="text-base font-medium text-neutral-900">
-                {isLoading ? 'Generating your strategy...' : 'Waiting for input'}
+              <h3 className="text-sm font-semibold text-neutral-200">
+                {isLoading ? 'Generating your creator strategy brief...' : 'No active brief generated'}
               </h3>
-              <p className="mt-2 max-w-xs text-sm text-neutral-500">
+              <p className="mt-1.5 max-w-xs text-xs text-neutral-500 leading-relaxed">
                 {isLoading
-                  ? 'AI is building titles, hooks, and a script outline for your topic.'
-                  : 'Enter a topic to generate a data-backed content strategy.'}
+                  ? 'Analyzing keyword velocity, audience retention patterns, and viral angles...'
+                  : 'Enter a concept topic on the left or select a trend to generate an actionable brief.'}
               </p>
-              {isLoading && <Loader2 className="mt-4 h-6 w-6 animate-spin text-brand-600" />}
+              {isLoading && <Loader2 className="mt-4 h-5 w-5 animate-spin text-indigo-400" />}
             </Card>
           ) : (
-            <Card variant="elevated" className="space-y-8">
-              <section className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-neutral-100 pb-5">
+            <Card variant="elevated" className="space-y-6 border-[#242424] bg-[#121212] p-6">
+              <section className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-[#1c1c1c] pb-4">
                 <div>
                   <div className="flex items-center gap-2">
-                    <p className="text-xs font-medium text-brand-600">Growth strategy</p>
+                    <p className="text-[11px] font-bold uppercase tracking-wider text-indigo-400">Strategy Report</p>
                     {sessionId && (
-                      <span className="inline-flex items-center rounded-full bg-purple-50 px-2 py-0.5 text-[10px] font-medium text-purple-700 ring-1 ring-inset ring-purple-600/20">
-                        Session: {sessionId.slice(0, 8)}
+                      <span className="rounded bg-[#1a1a1a] px-2 py-0.5 text-[10px] font-mono text-neutral-400 border border-[#2a2a2a]">
+                        ID: {sessionId.slice(0, 8)}
                       </span>
                     )}
                   </div>
-                  <h2 className="mt-1 text-xl font-semibold text-neutral-900">{brief.topic}</h2>
+                  <h2 className="mt-1 text-lg font-bold text-white">{brief.topic}</h2>
                 </div>
                 <Button
                   variant="primary"
                   onClick={handleOpenScheduleModal}
-                  className="shrink-0 shadow-sm"
+                  className="shrink-0 text-xs h-8 px-3"
                 >
-                  <Calendar className="mr-2 h-4 w-4" />
+                  <Calendar className="mr-1.5 h-3.5 w-3.5" />
                   Schedule to Planner
                 </Button>
               </section>
 
+              {/* Strategic Insight */}
               <section>
-                <p className="rounded-lg border border-brand-100 bg-brand-50 p-4 text-sm text-brand-900">
-                  <Sparkles className="mb-1 inline h-4 w-4 text-brand-600" /> {brief.strategy_insight}
-                </p>
+                <div className="rounded-lg border border-[#2c2854] bg-[#15132d] p-4 text-xs leading-relaxed text-indigo-200">
+                  <span className="font-semibold text-white block mb-1 flex items-center gap-1.5">
+                    <Sparkles className="h-3.5 w-3.5 text-indigo-400" /> Strategic Callout
+                  </span>
+                  {brief.strategy_insight}
+                </div>
               </section>
 
+              {/* Optimized Title Ideas */}
               <section>
-                <h3 className="text-sm font-medium text-neutral-900">Optimized titles</h3>
-                <div className="mt-3 space-y-2">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400 mb-2.5">
+                  Optimized Video Titles
+                </h3>
+                <div className="space-y-2">
                   {(brief.titles ?? []).map((t, i) => (
                     <div
                       key={i}
-                      className="flex items-center justify-between gap-3 rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2.5"
+                      className="flex items-center justify-between gap-3 rounded-lg border border-[#242424] bg-[#161616] px-3.5 py-2.5 transition-colors hover:border-[#383838]"
                     >
                       <div>
-                        <p className="text-sm font-medium text-neutral-800">{t.text}</p>
-                        <p className="text-xs text-neutral-500">{t.hook_type || 'Custom hook'}</p>
+                        <p className="text-xs font-semibold text-neutral-200">{t.text}</p>
+                        <p className="text-[10px] text-neutral-500 mt-0.5">{t.hook_type || 'Algorithmic hook'}</p>
                       </div>
                       <button
                         type="button"
                         onClick={() => handleCopyTitle(t.text, i)}
-                        className="rounded p-1.5 text-neutral-400 hover:bg-white hover:text-brand-600"
+                        className="rounded p-1 text-neutral-500 hover:bg-[#222222] hover:text-white transition-colors cursor-pointer"
                         title="Copy title"
                       >
-                        {copiedTitleIndex === i ? <Check className="h-4 w-4 text-emerald-600" /> : <Copy className="h-4 w-4" />}
+                        {copiedTitleIndex === i ? (
+                          <Check className="h-3.5 w-3.5 text-emerald-400" />
+                        ) : (
+                          <Copy className="h-3.5 w-3.5" />
+                        )}
                       </button>
                     </div>
                   ))}
                 </div>
               </section>
 
+              {/* Script Outline */}
               <section>
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-medium text-neutral-900">Script outline</h3>
+                <div className="flex items-center justify-between mb-2.5">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400">
+                    Structured Script Outline
+                  </h3>
                   <div className="flex items-center gap-2">
                     <Button
                       type="button"
                       variant="secondary"
                       size="sm"
                       onClick={handleCopyOutline}
-                      className="h-8 px-2.5 text-xs"
-                      title="Copy structured script outline to clipboard"
+                      className="h-7 px-2 text-[11px]"
                     >
                       {copiedOutline ? (
                         <>
-                          <Check className="mr-1.5 h-3.5 w-3.5 text-emerald-600" />
-                          Copied!
+                          <Check className="mr-1 h-3 w-3 text-emerald-400" />
+                          Copied
                         </>
                       ) : (
                         <>
-                          <Copy className="mr-1.5 h-3.5 w-3.5" />
-                          Copy Outline
+                          <Copy className="mr-1 h-3 w-3" />
+                          Copy
                         </>
                       )}
                     </Button>
@@ -384,50 +399,51 @@ export const StrategyPage: React.FC = () => {
                       variant="secondary"
                       size="sm"
                       onClick={handleExportOutline}
-                      className="h-8 px-2.5 text-xs"
-                      title="Download script outline as Markdown"
+                      className="h-7 px-2 text-[11px]"
                     >
-                      <Download className="mr-1.5 h-3.5 w-3.5" />
-                      Export Markdown
+                      <Download className="mr-1 h-3 w-3" />
+                      Markdown
                     </Button>
                   </div>
                 </div>
-                <div className="space-y-3">
-                  <div className="rounded-lg bg-neutral-900 p-4 text-white">
-                    <p className="text-xs text-brand-400">Hook</p>
-                    <p className="mt-2 text-sm">{brief.script_outline?.hook}</p>
+                <div className="space-y-2.5 text-xs">
+                  <div className="rounded-lg border border-[#2a284c] bg-[#141226] p-3.5">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-indigo-300">Hook (0:00 - 0:15)</p>
+                    <p className="mt-1.5 text-neutral-200 leading-relaxed">{brief.script_outline?.hook}</p>
                   </div>
-                  <div className="rounded-lg border border-neutral-200 p-4">
-                    <p className="text-xs text-neutral-500">Retention</p>
-                    <p className="mt-2 text-sm text-neutral-800">{brief.script_outline?.retention_mid}</p>
+                  <div className="rounded-lg border border-[#242424] bg-[#161616] p-3.5">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Retention & Value (Core)</p>
+                    <p className="mt-1.5 text-neutral-300 leading-relaxed">{brief.script_outline?.retention_mid}</p>
                   </div>
-                  <div className="rounded-lg bg-brand-600 p-4 text-white">
-                    <p className="text-xs text-white/70">CTA</p>
-                    <p className="mt-2 text-sm">{brief.script_outline?.cta}</p>
+                  <div className="rounded-lg border border-[#262626] bg-[#181818] p-3.5">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">Call to Action (CTA)</p>
+                    <p className="mt-1.5 text-neutral-300 leading-relaxed">{brief.script_outline?.cta}</p>
                   </div>
                 </div>
               </section>
 
+              {/* SEO Tags */}
               <section>
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-sm font-medium text-neutral-900">SEO tags</h3>
+                <div className="flex items-center justify-between mb-2.5">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-400">
+                    SEO Query Tags
+                  </h3>
                   <div className="flex items-center gap-2">
                     <Button
                       type="button"
                       variant="secondary"
                       size="sm"
                       onClick={handleCopyTags}
-                      className="h-8 px-2.5 text-xs"
-                      title="Copy SEO tags to clipboard"
+                      className="h-7 px-2 text-[11px]"
                     >
                       {copiedTags ? (
                         <>
-                          <Check className="mr-1.5 h-3.5 w-3.5 text-emerald-600" />
-                          Copied!
+                          <Check className="mr-1 h-3 w-3 text-emerald-400" />
+                          Copied
                         </>
                       ) : (
                         <>
-                          <Copy className="mr-1.5 h-3.5 w-3.5" />
+                          <Copy className="mr-1 h-3 w-3" />
                           Copy Tags
                         </>
                       )}
@@ -437,19 +453,18 @@ export const StrategyPage: React.FC = () => {
                       variant="secondary"
                       size="sm"
                       onClick={handleExportTags}
-                      className="h-8 px-2.5 text-xs"
-                      title="Download SEO tags as text file"
+                      className="h-7 px-2 text-[11px]"
                     >
-                      <Download className="mr-1.5 h-3.5 w-3.5" />
+                      <Download className="mr-1 h-3 w-3" />
                       Export TXT
                     </Button>
                   </div>
                 </div>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5">
                   {(brief.tags ?? []).map((tag, i) => (
                     <span
                       key={i}
-                      className="rounded-md border border-neutral-200 bg-neutral-50 px-2 py-1 text-xs text-neutral-600"
+                      className="rounded bg-[#161616] border border-[#242424] px-2 py-0.5 text-[11px] text-neutral-300"
                     >
                       #{tag}
                     </span>
@@ -461,71 +476,48 @@ export const StrategyPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Schedule to Planner Modal */}
+      {/* Schedule to Planner Modal (Dark Mode) */}
       {isScheduleModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-xs animate-in fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 p-4 backdrop-blur-xs animate-in">
           <div
-            className="w-full max-w-lg rounded-xl bg-white p-6 shadow-2xl border border-neutral-200 animate-in zoom-in-95"
+            className="w-full max-w-lg rounded-xl bg-[#141414] p-6 shadow-2xl border border-[#2a2a2a]"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between pb-3 border-b border-neutral-100">
-              <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-50 text-brand-600">
+            <div className="flex items-center justify-between pb-3 border-b border-[#222222]">
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#1e1e1e] text-neutral-300 border border-[#2c2c2c]">
                   <Calendar className="h-4 w-4" />
                 </div>
                 <div>
-                  <h3 className="text-base font-semibold text-neutral-900">Schedule to Planner</h3>
-                  <p className="text-xs text-neutral-500">Plan this brief directly on your content calendar</p>
+                  <h3 className="text-sm font-bold text-white">Schedule to Planner</h3>
+                  <p className="text-[11px] text-neutral-500">Add this brief to your production calendar</p>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => setIsScheduleModalOpen(false)}
-                className="p-1 text-neutral-400 hover:text-neutral-700 rounded-md hover:bg-neutral-100"
+                className="p-1 text-neutral-500 hover:text-white rounded cursor-pointer"
               >
                 <X className="h-4 w-4" />
               </button>
             </div>
 
-            {sessionId && (
-              <div className="mt-3 flex items-center gap-1.5 rounded-md bg-purple-50 px-2.5 py-1 text-xs text-purple-700 border border-purple-200">
-                <span className="font-semibold">Strategy Session:</span>
-                <span className="font-mono">{sessionId.slice(0, 8)}...</span>
-                <span className="text-purple-500 text-[11px]">(automatically linked)</span>
-              </div>
-            )}
-
-            <form onSubmit={handleScheduleSubmit} className="mt-4 space-y-4">
+            <form onSubmit={handleScheduleSubmit} className="mt-4 space-y-3.5">
               <div>
-                <label className="block text-xs font-medium text-neutral-700 mb-1">
+                <label className="block text-xs font-medium text-neutral-300 mb-1">
                   Video Title / Topic *
                 </label>
                 <Input
                   value={scheduleTopic}
                   onChange={(e) => setScheduleTopic(e.target.value)}
-                  placeholder="e.g. 5 AI Tools Every Creator Needs"
+                  placeholder="e.g. 5 AI Coding Agents You Need"
                   required
                 />
-                {brief?.titles && brief.titles.length > 1 && (
-                  <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-                    <span className="text-[11px] text-neutral-400 mr-1">Choose title:</span>
-                    {brief.titles.map((t, idx) => (
-                      <button
-                        key={idx}
-                        type="button"
-                        onClick={() => setScheduleTopic(t.text)}
-                        className="rounded bg-neutral-100 px-2 py-0.5 text-[11px] text-neutral-600 hover:bg-brand-50 hover:text-brand-700 transition-colors"
-                      >
-                        {t.text.length > 35 ? t.text.slice(0, 35) + '...' : t.text}
-                      </button>
-                    ))}
-                  </div>
-                )}
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-neutral-700 mb-1">
+                  <label className="block text-xs font-medium text-neutral-300 mb-1">
                     Target Date & Time *
                   </label>
                   <input
@@ -533,18 +525,18 @@ export const StrategyPage: React.FC = () => {
                     value={scheduleDate}
                     onChange={(e) => setScheduleDate(e.target.value)}
                     required
-                    className="h-9 w-full rounded-lg border border-neutral-200 bg-white px-2.5 text-xs text-neutral-900 focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/10"
+                    className="h-9 w-full rounded-lg border border-[#282828] bg-[#161616] px-2.5 text-xs text-[#ededed] focus:border-[#4f46e5] focus:outline-none"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-neutral-700 mb-1">
+                  <label className="block text-xs font-medium text-neutral-300 mb-1">
                     Initial Status
                   </label>
                   <select
                     value={scheduleStatus}
                     onChange={(e) => setScheduleStatus(e.target.value as SlotLifecycleStatus)}
-                    className="h-9 w-full rounded-lg border border-neutral-200 bg-white px-2.5 text-xs text-neutral-900 focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/10"
+                    className="h-9 w-full rounded-lg border border-[#282828] bg-[#161616] px-2.5 text-xs text-[#ededed] focus:border-[#4f46e5] focus:outline-none cursor-pointer"
                   >
                     <option value="not_started">Not Started</option>
                     <option value="scripting">Scripting</option>
@@ -556,18 +548,18 @@ export const StrategyPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-neutral-700 mb-1">
+                <label className="block text-xs font-medium text-neutral-300 mb-1">
                   Notes / Outline Summary
                 </label>
                 <textarea
                   rows={4}
                   value={scheduleNotes}
                   onChange={(e) => setScheduleNotes(e.target.value)}
-                  className="w-full rounded-lg border border-neutral-200 bg-white p-2.5 text-xs text-neutral-900 placeholder:text-neutral-400 focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand-600/10"
+                  className="w-full rounded-lg border border-[#282828] bg-[#161616] p-2.5 text-xs text-[#ededed] placeholder-neutral-500 focus:border-[#4f46e5] focus:outline-none"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-neutral-100">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-[#222222]">
                 <Button
                   type="button"
                   variant="secondary"
@@ -577,17 +569,7 @@ export const StrategyPage: React.FC = () => {
                   Cancel
                 </Button>
                 <Button type="submit" size="sm" disabled={isScheduling || !scheduleTopic.trim()}>
-                  {isScheduling ? (
-                    <>
-                      <Loader2 className="h-3.5 w-3.5 animate-spin mr-1.5" />
-                      Scheduling...
-                    </>
-                  ) : (
-                    <>
-                      <Calendar className="h-3.5 w-3.5 mr-1.5" />
-                      Schedule Slot
-                    </>
-                  )}
+                  {isScheduling ? 'Scheduling...' : 'Schedule Slot'}
                 </Button>
               </div>
             </form>

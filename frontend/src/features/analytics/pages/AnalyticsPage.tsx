@@ -337,16 +337,16 @@ export const AnalyticsPage: React.FC = () => {
       <PageHeader
         title={
           <div className="flex items-center gap-3">
-            <span className="text-gradient-brand">Analytics</span>
+            <span className="text-white font-semibold">Analytics</span>
             {lastSynced && (
-              <Badge variant="success" className="hidden sm:inline-flex items-center gap-1 font-normal">
+              <Badge variant="success" className="hidden sm:inline-flex items-center gap-1 font-normal bg-emerald-950/50 text-emerald-400 border border-emerald-800/40">
                 <CheckCircle2 className="h-3 w-3" />
                 <span>{liveViewToast ?? 'Live synced'}</span>
               </Badge>
             )}
           </div>
         }
-        description="Performance metrics and audience retention across your channel."
+        description="Performance metrics and audience retention telemetry across your channel."
         actions={
           <div className="flex flex-wrap items-center gap-2">
             <div className="relative" ref={exportDropdownRef}>
@@ -357,9 +357,9 @@ export const AnalyticsPage: React.FC = () => {
                 aria-expanded={exportMenuOpen}
                 aria-haspopup="true"
                 aria-label="Export analytics report"
-                className="flex items-center gap-1.5"
+                className="flex items-center gap-1.5 bg-[#161616] border-[#2a2a2a] text-[#ededed] hover:bg-[#202020]"
               >
-                <Download className="h-3.5 w-3.5 text-neutral-500" />
+                <Download className="h-3.5 w-3.5 text-neutral-400" />
                 <span>Export</span>
                 <ChevronDown
                   className={cn(
@@ -372,7 +372,7 @@ export const AnalyticsPage: React.FC = () => {
                 role="menu"
                 aria-label="Export options"
                 className={cn(
-                  'absolute right-0 mt-1.5 w-44 rounded-xl border border-neutral-200 bg-white p-1 shadow-lg z-30 transition-all duration-150',
+                  'absolute right-0 mt-1.5 w-44 rounded-xl border border-[#282828] bg-[#141414] p-1 shadow-2xl z-30 transition-all duration-150',
                   exportMenuOpen
                     ? 'opacity-100 scale-100 pointer-events-auto'
                     : 'opacity-0 scale-95 pointer-events-none'
@@ -382,18 +382,18 @@ export const AnalyticsPage: React.FC = () => {
                   role="menuitem"
                   type="button"
                   onClick={handleExportCSV}
-                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-neutral-700 hover:bg-neutral-50 hover:text-neutral-900 transition-colors"
+                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-neutral-300 hover:bg-[#1f1f1f] hover:text-white transition-colors"
                 >
-                  <FileSpreadsheet className="h-4 w-4 text-emerald-600" />
+                  <FileSpreadsheet className="h-4 w-4 text-emerald-400" />
                   <span>Export CSV</span>
                 </button>
                 <button
                   role="menuitem"
                   type="button"
                   onClick={handleExportJSON}
-                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-neutral-700 hover:bg-neutral-50 hover:text-neutral-900 transition-colors"
+                  className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-xs font-medium text-neutral-300 hover:bg-[#1f1f1f] hover:text-white transition-colors"
                 >
-                  <FileCode className="h-4 w-4 text-brand-600" />
+                  <FileCode className="h-4 w-4 text-brand-400" />
                   <span>Export JSON</span>
                 </button>
               </div>
@@ -419,13 +419,13 @@ export const AnalyticsPage: React.FC = () => {
           className="flex items-center justify-between shadow-sm animate-in fade-in"
         >
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
-            <span>{exportAlert.message}</span>
+            <CheckCircle2 className="h-4 w-4 text-emerald-400 shrink-0" />
+            <span className="text-sm">{exportAlert.message}</span>
           </div>
           <button
             type="button"
             onClick={() => setExportAlert(null)}
-            className="p-1 text-neutral-500 hover:text-neutral-700 rounded transition-colors"
+            className="p-1 text-neutral-400 hover:text-neutral-200 rounded transition-colors"
             aria-label="Dismiss export alert"
           >
             <X className="h-3.5 w-3.5" />
@@ -435,21 +435,21 @@ export const AnalyticsPage: React.FC = () => {
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
         <div className="space-y-6 lg:col-span-8">
-          <Card variant="elevated">
+          <Card variant="elevated" className="bg-[#121212] border-[#222222]">
             <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <h2 className="text-sm font-semibold text-neutral-900">Retention flow</h2>
+                <h2 className="text-sm font-semibold text-[#ededed]">Retention flow</h2>
                 <p className="text-xs text-neutral-500">{activeProfile.description}</p>
               </div>
               <select
                 value={retentionFilter}
                 onChange={(e) => setRetentionFilter(e.target.value as RetentionFilter)}
                 aria-label="Filter retention curve"
-                className="h-9 rounded-lg border border-neutral-200 bg-white px-3 text-sm text-neutral-700 shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
+                className="h-9 rounded-lg border border-[#282828] bg-[#161616] px-3 text-sm text-[#ededed] shadow-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
               >
-                <option value="Latest data">Latest data</option>
-                <option value="High velocity">High velocity</option>
-                <option value="Baseline">Baseline</option>
+                <option value="Latest data" className="bg-[#161616] text-[#ededed]">Latest data</option>
+                <option value="High velocity" className="bg-[#161616] text-[#ededed]">High velocity</option>
+                <option value="Baseline" className="bg-[#161616] text-[#ededed]">Baseline</option>
               </select>
             </div>
             <MiniBarChart
@@ -458,32 +458,32 @@ export const AnalyticsPage: React.FC = () => {
               formatValue={(val) => `${val}% retention`}
             />
             <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <div className="rounded-xl border border-brand-200/60 bg-gradient-to-br from-brand-50 to-white p-4 shadow-sm">
+              <div className="rounded-xl border border-brand-500/20 bg-gradient-to-br from-brand-950/20 to-[#161616] p-4 shadow-sm">
                 <div className="flex items-center justify-between">
-                  <p className="text-xs font-medium text-brand-700">Intro hook</p>
-                  <ArrowUpRight className="h-4 w-4 text-success-600" />
+                  <p className="text-xs font-medium text-brand-400">Intro hook</p>
+                  <ArrowUpRight className="h-4 w-4 text-emerald-400" />
                 </div>
-                <p className="mt-2 text-2xl font-semibold text-neutral-900 metric">
+                <p className="mt-2 text-2xl font-semibold text-[#ededed] metric font-mono">
                   {currentMetrics.intro}%
                 </p>
                 <p className="mt-1 text-xs text-neutral-500">Retention at 0:30</p>
               </div>
-              <div className="rounded-xl border border-emerald-200/60 bg-gradient-to-br from-emerald-50 to-white p-4 shadow-sm">
+              <div className="rounded-xl border border-emerald-500/20 bg-gradient-to-br from-emerald-950/20 to-[#161616] p-4 shadow-sm">
                 <div className="flex items-center justify-between">
-                  <p className="text-xs font-medium text-emerald-700">Engagement</p>
-                  <TrendingUp className="h-4 w-4 text-success-600" />
+                  <p className="text-xs font-medium text-emerald-400">Engagement</p>
+                  <TrendingUp className="h-4 w-4 text-emerald-400" />
                 </div>
-                <p className="mt-2 text-2xl font-semibold text-neutral-900 metric">
+                <p className="mt-2 text-2xl font-semibold text-[#ededed] metric font-mono">
                   {currentMetrics.value}%
                 </p>
                 <p className="mt-1 text-xs text-neutral-500">Avg. view duration</p>
               </div>
-              <div className="rounded-xl border border-indigo-200/60 bg-gradient-to-br from-indigo-50 to-white p-4 shadow-sm">
+              <div className="rounded-xl border border-indigo-500/20 bg-gradient-to-br from-indigo-950/20 to-[#161616] p-4 shadow-sm">
                 <div className="flex items-center justify-between">
-                  <p className="text-xs font-medium text-indigo-700">Outro</p>
-                  <ArrowDownRight className="h-4 w-4 text-indigo-500" />
+                  <p className="text-xs font-medium text-indigo-400">Outro</p>
+                  <ArrowDownRight className="h-4 w-4 text-indigo-400" />
                 </div>
-                <p className="mt-2 text-2xl font-semibold text-neutral-900 metric">
+                <p className="mt-2 text-2xl font-semibold text-[#ededed] metric font-mono">
                   {currentMetrics.outro}%
                 </p>
                 <p className="mt-1 text-xs text-neutral-500">CTR point (end screen)</p>
@@ -493,26 +493,26 @@ export const AnalyticsPage: React.FC = () => {
         </div>
 
         <div className="space-y-6 lg:col-span-4">
-          <Card variant="elevated">
-            <h2 className="flex items-center gap-2 text-sm font-semibold text-neutral-900">
-              <Globe className="h-4 w-4 text-brand-600" />
+          <Card variant="elevated" className="bg-[#121212] border-[#222222]">
+            <h2 className="flex items-center gap-2 text-sm font-semibold text-[#ededed]">
+              <Globe className="h-4 w-4 text-brand-400" />
               Traffic sources
             </h2>
             <div className="mt-5 space-y-4">
               {sources.length === 0 ? (
-                <div className="py-8 text-center text-xs text-neutral-400">
+                <div className="py-8 text-center text-xs text-neutral-500">
                   No traffic sources recorded yet.
                 </div>
               ) : (
                 sources.map((source, i) => (
                   <div key={source.source || i}>
                     <div className="mb-1.5 flex justify-between text-sm">
-                      <span className="text-neutral-700">{source.source}</span>
-                      <span className="font-medium text-neutral-900">{source.value ?? 0}%</span>
+                      <span className="text-neutral-300">{source.source}</span>
+                      <span className="font-mono font-medium text-[#ededed]">{source.value ?? 0}%</span>
                     </div>
-                    <div className="h-2 overflow-hidden rounded-full bg-neutral-100">
+                    <div className="h-2 overflow-hidden rounded-full bg-[#181818] border border-[#242424]">
                       <div
-                        className="h-full rounded-full bg-gradient-to-r from-brand-600 to-brand-500 transition-all duration-500"
+                        className="h-full rounded-full bg-gradient-to-r from-brand-600 to-indigo-500 transition-all duration-500"
                         style={{
                           width: `${Math.min(100, Math.max(0, source.value ?? 0))}%`,
                         }}
@@ -524,41 +524,41 @@ export const AnalyticsPage: React.FC = () => {
             </div>
           </Card>
 
-          <Card variant="elevated">
-            <h2 className="flex items-center gap-2 text-sm font-semibold text-neutral-900">
-              <Users className="h-4 w-4 text-brand-600" />
+          <Card variant="elevated" className="bg-[#121212] border-[#222222]">
+            <h2 className="flex items-center gap-2 text-sm font-semibold text-[#ededed]">
+              <Users className="h-4 w-4 text-brand-400" />
               Audience
             </h2>
             <div className="mt-4 flex flex-wrap gap-2">
               {ageGroups.length === 0 ? (
-                <p className="py-2 text-xs text-neutral-400">
+                <p className="py-2 text-xs text-neutral-500">
                   No age demographic data available.
                 </p>
               ) : (
                 ageGroups.map((group, i) => (
                   <div
                     key={group.group || i}
-                    className="min-w-[72px] flex-1 rounded-xl border border-neutral-200 bg-gradient-to-b from-neutral-50 to-white px-3 py-2.5 shadow-sm"
+                    className="min-w-[72px] flex-1 rounded-xl border border-[#262626] bg-[#161616] px-3 py-2.5 shadow-sm"
                   >
                     <p className="text-xs text-neutral-500">{group.group}</p>
-                    <p className="text-lg font-semibold text-neutral-900 metric">
+                    <p className="text-lg font-semibold text-[#ededed] metric font-mono">
                       {group.percentage ?? 0}%
                     </p>
                   </div>
                 ))
               )}
             </div>
-            <div className="mt-4 space-y-2 border-t border-neutral-100 pt-4">
+            <div className="mt-4 space-y-2 border-t border-[#222222] pt-4">
               <p className="text-xs font-medium text-neutral-500">Top locations</p>
               {locations.length === 0 ? (
-                <p className="py-2 text-xs text-neutral-400">
+                <p className="py-2 text-xs text-neutral-500">
                   No location data available.
                 </p>
               ) : (
                 locations.map((loc, i) => (
                   <div key={loc.country || i} className="flex justify-between text-sm">
-                    <span className="text-neutral-600">{loc.country}</span>
-                    <span className="font-medium text-neutral-900">
+                    <span className="text-neutral-400">{loc.country}</span>
+                    <span className="font-mono font-medium text-[#ededed]">
                       {loc.percentage ?? 0}%
                     </span>
                   </div>

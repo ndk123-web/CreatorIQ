@@ -35,36 +35,43 @@ function SidebarNav({
 }) {
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     cn(
-      'group relative flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-all duration-200',
+      'group relative flex items-center gap-3 rounded-lg px-3 py-2 text-xs font-medium transition-all duration-150',
       collapsed && 'justify-center px-2',
       isActive
-        ? 'bg-gradient-to-r from-brand-600/30 via-brand-600/20 to-brand-600/5 text-white shadow-md shadow-brand-900/30 border border-brand-500/30'
-        : 'text-neutral-400 hover:bg-white/5 hover:text-white'
+        ? 'bg-[#1c1c1c] text-white border border-[#2e2e2e]'
+        : 'text-[#8e8e93] hover:bg-[#141414] hover:text-[#d1d1d6]'
     );
 
   return (
-    <nav className="flex flex-1 flex-col gap-1.5 overflow-y-auto px-3.5 py-5 custom-scrollbar">
-      <div className="mb-2 px-2 text-[10px] font-bold uppercase tracking-wider text-neutral-500">
-        Workspace Navigation
+    <nav className="flex flex-1 flex-col gap-1 overflow-y-auto px-3 py-4 custom-scrollbar">
+      <div className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-wider text-[#545458]">
+        Platform
       </div>
       {navItems.map((item) => (
         <NavLink key={item.href} to={item.href} className={linkClass} onClick={onNavigate}>
           {({ isActive }) => (
             <>
-              <item.icon className={cn("h-4 w-4 shrink-0 transition-transform duration-200 group-hover:scale-110", isActive ? "text-brand-400" : "text-neutral-400")} />
+              <item.icon
+                className={cn(
+                  'h-4 w-4 shrink-0 transition-colors',
+                  isActive ? 'text-white' : 'text-[#71717a] group-hover:text-[#a1a1aa]'
+                )}
+              />
               {!collapsed && <span className="tracking-tight">{item.name}</span>}
-              {isActive && !collapsed && (
-                <span className="ml-auto h-1.5 w-1.5 rounded-full bg-brand-400 shadow-xs shadow-brand-400" />
-              )}
             </>
           )}
         </NavLink>
       ))}
-      <div className="mt-auto border-t border-white/10 pt-4">
+      <div className="mt-auto border-t border-[#1e1e1e] pt-3">
         <NavLink to="/app/settings" className={linkClass} onClick={onNavigate}>
           {({ isActive }) => (
             <>
-              <Settings className={cn("h-4 w-4 shrink-0 transition-transform duration-200 group-hover:scale-110", isActive ? "text-brand-400" : "text-neutral-400")} />
+              <Settings
+                className={cn(
+                  'h-4 w-4 shrink-0 transition-colors',
+                  isActive ? 'text-white' : 'text-[#71717a] group-hover:text-[#a1a1aa]'
+                )}
+              />
               {!collapsed && <span className="tracking-tight">Settings</span>}
             </>
           )}
@@ -79,28 +86,30 @@ export const MainLayout: React.FC = () => {
   const user = useAuthStore((s) => s.user);
 
   return (
-    <div className="app-shell flex min-h-screen bg-neutral-50">
+    <div className="app-shell flex min-h-screen bg-[#0a0a0a] text-[#ededed]">
       {/* Desktop sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r border-neutral-800/60 bg-gradient-to-b from-neutral-950 via-neutral-900 to-neutral-950 text-white shadow-2xl shadow-neutral-950/50 lg:flex">
-        <div className="flex h-16 items-center gap-3 border-b border-white/10 px-5">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white p-1 shadow-md shadow-brand-900/20 ring-2 ring-brand-500/20">
+      <aside className="fixed inset-y-0 left-0 z-40 hidden w-60 flex-col border-r border-[#1a1a1a] bg-[#0d0d0d] text-[#ededed] lg:flex">
+        <div className="flex h-14 items-center gap-2.5 border-b border-[#1a1a1a] px-4">
+          <div className="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white p-0.5 shadow-xs">
             <img src={logo} alt="CreatorIQ" className="h-full w-full object-contain" />
           </div>
-          <div className="flex flex-col">
-            <span className="font-sora text-base font-bold tracking-tight text-white">
-              Creator<span className="text-brand-400">IQ</span>
+          <div className="flex items-center gap-1.5">
+            <span className="font-sora text-sm font-semibold tracking-tight text-white">
+              CreatorIQ
             </span>
-            <span className="text-[10px] font-medium text-neutral-400 tracking-wider uppercase">AI Trend Engine</span>
+            <span className="rounded bg-[#1a1a1a] px-1.5 py-0.5 text-[9px] font-medium text-neutral-400 border border-[#2a2a2a]">
+              AI
+            </span>
           </div>
         </div>
         <SidebarNav />
-        <div className="border-t border-white/10 p-3.5">
+        <div className="border-t border-[#1a1a1a] p-3">
           <button
             type="button"
             onClick={() => useAuthStore.getState().logout()}
-            className="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium text-neutral-400 transition-colors hover:bg-red-500/10 hover:text-red-300"
+            className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-[#71717a] transition-colors hover:bg-[#1a1212] hover:text-[#f87171] cursor-pointer"
           >
-            <LogOut className="h-4 w-4" />
+            <LogOut className="h-3.5 w-3.5" />
             Log out
           </button>
         </div>
@@ -111,34 +120,34 @@ export const MainLayout: React.FC = () => {
         <div className="fixed inset-0 z-50 lg:hidden">
           <button
             type="button"
-            className="absolute inset-0 bg-neutral-900/60 backdrop-blur-xs"
+            className="absolute inset-0 bg-black/70 backdrop-blur-xs"
             aria-label="Close menu"
             onClick={() => setMobileOpen(false)}
           />
-          <aside className="absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col bg-neutral-950 text-white shadow-2xl">
-            <div className="flex h-16 items-center justify-between border-b border-white/10 px-4">
-              <div className="flex items-center gap-3">
-                <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl bg-white p-1">
+          <aside className="absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col bg-[#0d0d0d] text-white shadow-2xl border-r border-[#1a1a1a]">
+            <div className="flex h-14 items-center justify-between border-b border-[#1a1a1a] px-4">
+              <div className="flex items-center gap-2.5">
+                <div className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-lg bg-white p-0.5">
                   <img src={logo} alt="CreatorIQ" className="h-full w-full object-contain" />
                 </div>
-                <span className="font-sora text-base font-bold text-white">CreatorIQ</span>
+                <span className="font-sora text-sm font-semibold text-white">CreatorIQ</span>
               </div>
               <button
                 type="button"
                 onClick={() => setMobileOpen(false)}
-                className="rounded-lg p-2 text-neutral-400 hover:bg-white/10 hover:text-white"
+                className="rounded-lg p-1.5 text-neutral-400 hover:bg-[#1a1a1a] hover:text-white"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
             <SidebarNav onNavigate={() => setMobileOpen(false)} />
-            <div className="border-t border-white/10 p-3.5">
+            <div className="border-t border-[#1a1a1a] p-3">
               <button
                 type="button"
                 onClick={() => useAuthStore.getState().logout()}
-                className="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium text-neutral-400 hover:bg-red-500/10 hover:text-red-300"
+                className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-[#71717a] hover:bg-[#1a1212] hover:text-[#f87171]"
               >
-                <LogOut className="h-4 w-4" />
+                <LogOut className="h-3.5 w-3.5" />
                 Log out
               </button>
             </div>
@@ -147,12 +156,12 @@ export const MainLayout: React.FC = () => {
       )}
 
       {/* Main column */}
-      <div className="app-main flex min-h-screen flex-1 flex-col lg:pl-64">
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-neutral-200/80 surface-glass px-4 sm:px-6 lg:px-8">
+      <div className="app-main flex min-h-screen flex-1 flex-col lg:pl-60">
+        <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-[#1a1a1a] bg-[#0a0a0a]/90 backdrop-blur-md px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-3">
             <button
               type="button"
-              className="rounded-xl p-2 text-neutral-600 hover:bg-neutral-100 lg:hidden"
+              className="rounded-lg p-1.5 text-neutral-400 hover:bg-[#1a1a1a] lg:hidden"
               onClick={() => setMobileOpen(true)}
               aria-label="Open menu"
             >
@@ -161,11 +170,11 @@ export const MainLayout: React.FC = () => {
 
             <div className="hidden min-w-0 flex-1 sm:block sm:w-80">
               <div className="relative">
-                <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-neutral-400" />
+                <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-neutral-500" />
                 <input
                   type="search"
-                  placeholder="Quick search trends, topics, niche concepts..."
-                  className="h-10 w-full rounded-xl border border-neutral-200/90 bg-neutral-100/70 pl-10 pr-4 text-xs font-medium text-neutral-900 placeholder:text-neutral-400 focus:border-brand-600 focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-600/10 transition-all"
+                  placeholder="Search trends, topics, concepts..."
+                  className="h-8 w-full rounded-lg border border-[#242424] bg-[#121212] pl-8 pr-3 text-xs text-[#ededed] placeholder-neutral-500 focus:border-[#383838] focus:bg-[#141414] focus:outline-none transition-all"
                 />
               </div>
             </div>
@@ -174,31 +183,31 @@ export const MainLayout: React.FC = () => {
           <div className="flex items-center gap-3">
             <button
               type="button"
-              className="relative rounded-xl border border-neutral-200/80 bg-white p-2.5 text-neutral-600 hover:bg-neutral-50 hover:text-neutral-900 shadow-2xs transition-colors"
+              className="relative rounded-lg border border-[#242424] bg-[#121212] p-2 text-neutral-400 hover:bg-[#181818] hover:text-white transition-colors cursor-pointer"
               aria-label="Notifications"
             >
-              <Bell className="h-4 w-4" />
-              <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-brand-600 ring-2 ring-white" />
+              <Bell className="h-3.5 w-3.5" />
+              <span className="absolute right-1.5 top-1.5 h-1.5 w-1.5 rounded-full bg-indigo-500" />
             </button>
-            <div className="hidden items-center gap-3 sm:flex border-l border-neutral-200/80 pl-3">
+            <div className="hidden items-center gap-2.5 sm:flex border-l border-[#242424] pl-3">
               <div className="text-right">
-                <p className="text-xs font-bold text-neutral-900 leading-tight">
+                <p className="text-xs font-medium text-[#ededed] leading-tight">
                   {user?.full_name ?? 'Creator Account'}
                 </p>
-                <p className="mt-0.5 text-[11px] text-neutral-500 font-medium">{user?.email ?? ''}</p>
+                <p className="mt-0.5 text-[10px] text-neutral-500 font-normal">{user?.email ?? ''}</p>
               </div>
-              <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl bg-gradient-to-br from-brand-600 to-indigo-700 text-white shadow-sm ring-2 ring-brand-100">
+              <div className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-lg bg-[#1a1a1a] border border-[#2a2a2a] text-neutral-300">
                 {user?.avatar_url ? (
                   <img src={user.avatar_url} alt="" className="h-full w-full object-cover" />
                 ) : (
-                  <User className="h-4.5 w-4.5" />
+                  <User className="h-3.5 w-3.5" />
                 )}
               </div>
             </div>
           </div>
         </header>
 
-        <main className="surface-app flex-1 overflow-x-hidden">
+        <main className="surface-app flex-1 overflow-x-hidden bg-[#0a0a0a]">
           <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
             <Outlet />
           </div>
