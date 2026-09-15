@@ -176,16 +176,11 @@ export const DashboardPage: React.FC = () => {
 
             <button
               type="submit"
-              className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white hover:bg-blue-500 transition-colors cursor-pointer shadow-sm"
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-pure-white text-black hover:bg-neutral-200 transition-colors cursor-pointer shadow-sm"
+              style={{ backgroundColor: '#ffffff', color: '#000000' }}
               title="Send prompt to AI"
             >
-              {chatQuery.trim().length > 0 ? (
-                <ArrowRight className="h-4 w-4" />
-              ) : (
-                <span className="flex items-center justify-center text-xs tracking-tighter font-bold">
-                  ılı
-                </span>
-              )}
+              <ArrowRight className="h-4 w-4" style={{ color: '#000000' }} />
             </button>
           </div>
         </form>
