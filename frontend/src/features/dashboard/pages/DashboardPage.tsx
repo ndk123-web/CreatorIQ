@@ -26,6 +26,7 @@ import {
   BarChart2,
   ChevronRight,
   Film,
+  Mic,
 } from "lucide-react";
 
 type ForecastPeriod = '28d' | '90d' | 'ALL';
