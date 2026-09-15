@@ -167,7 +167,7 @@ export const LandingPage: React.FC = () => {
         actions={
           <>
             <Link to={isAuthenticated ? '/app/dashboard' : '/signup'}>
-              <Button size="lg">
+              <Button variant='secondary' size="lg">
                 {isAuthenticated ? 'Go to dashboard' : 'Start free'}
                 <ArrowRight className="h-4 w-4" />
               </Button>

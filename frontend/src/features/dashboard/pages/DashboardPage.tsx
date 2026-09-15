@@ -59,12 +59,6 @@ const FORECAST_PERIOD_DATA: Record<ForecastPeriod, ForecastData> = {
   },
 };
 
-function formatSubs(n: number): string {
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
-  if (n >= 1_000) return `${(n / 1_000).toFixed(0)}K`;
-  return String(n);
-}
-
 export const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
   const { stats, insights = [], fetchDashboard } = useDashboardStore();
@@ -72,7 +66,6 @@ export const DashboardPage: React.FC = () => {
   const {
     trends,
     isLoading: isTrendsLoading,
-    channelContext,
     fetchTrends,
   } = useTrendsStore();
   const user = useAuthStore((s) => s.user);

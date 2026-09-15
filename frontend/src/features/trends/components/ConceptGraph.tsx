@@ -47,7 +47,8 @@ export const ConceptGraph: React.FC<ConceptGraphProps> = ({ trend, className }) 
     ? Math.round((trend as any).vector_similarity * 100)
     : 92;
 
-  // Radial positioning around center (cx=400, cy=200 on 800x400 viewBox)
+  // Harmoniously positioned nodes around center (cx=450, cy=220 on 900x440 viewBox)
+  // Plenty of clearance from all edges and between nodes
   const nodes: GraphNode[] = [
     {
       id: 'velocity',
@@ -56,7 +57,7 @@ export const ConceptGraph: React.FC<ConceptGraphProps> = ({ trend, className }) 
       value: trend.velocity || '245K/hr',
       status: 'high',
       x: 180,
-      y: 90,
+      y: 95,
       icon: TrendingUp,
     },
     {
@@ -65,8 +66,8 @@ export const ConceptGraph: React.FC<ConceptGraphProps> = ({ trend, className }) 
       category: 'Engagement',
       value: '72% at 0:30',
       status: 'optimal',
-      x: 620,
-      y: 90,
+      x: 720,
+      y: 95,
       icon: Users,
     },
     {
@@ -75,8 +76,8 @@ export const ConceptGraph: React.FC<ConceptGraphProps> = ({ trend, className }) 
       category: 'Semantic Niche',
       value: trend.niches?.[0] || 'Tech / AI',
       status: 'optimal',
-      x: 140,
-      y: 280,
+      x: 180,
+      y: 335,
       icon: Layers,
     },
     {
@@ -85,8 +86,8 @@ export const ConceptGraph: React.FC<ConceptGraphProps> = ({ trend, className }) 
       category: 'Competition',
       value: 'Low (Early Window)',
       status: 'medium',
-      x: 660,
-      y: 280,
+      x: 720,
+      y: 335,
       icon: BarChart3,
     },
     {
@@ -95,8 +96,8 @@ export const ConceptGraph: React.FC<ConceptGraphProps> = ({ trend, className }) 
       category: 'Commercial Fit',
       value: 'High RPM ($14-22)',
       status: 'optimal',
-      x: 400,
-      y: 340,
+      x: 450,
+      y: 365,
       icon: DollarSign,
     },
   ];
@@ -104,80 +105,86 @@ export const ConceptGraph: React.FC<ConceptGraphProps> = ({ trend, className }) 
   const activeNode = nodes.find((n) => n.id === activeNodeId);
 
   return (
-    <div className={cn('rounded-xl border border-[#242424] bg-[#0c0c0c] overflow-hidden', className)}>
+    <div className={cn('rounded-xl border border-[#242424] bg-[#0c0c0c] overflow-hidden shadow-xl', className)}>
       {/* Topology Header Controls */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#1e1e1e] bg-[#111111] px-4 py-3">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#1e1e1e] bg-[#111111] px-5 py-3.5">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-indigo-950/60 border border-indigo-700/40 text-indigo-400">
-            <Target className="h-3.5 w-3.5" />
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-950/60 border border-indigo-700/40 text-indigo-400 shadow-xs">
+            <Target className="h-4 w-4" />
           </div>
           <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-white">
-              Concept Topology & Vector Graph
-            </span>
-            <span className="hidden sm:inline-block ml-2 text-[11px] text-neutral-500 font-normal">
-              Interactive relationship cluster mapping
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-white">
+                Concept Topology &amp; Vector Graph
+              </span>
+              <span className="rounded bg-[#1a1a1a] border border-[#2a2a2a] px-2 py-0.5 text-[10px] font-mono text-neutral-400">
+                Qdrant Engine
+              </span>
+            </div>
+            <p className="text-[11px] text-neutral-400 mt-0.5">
+              Interactive relationship cluster mapping &bull; Click any node to inspect telemetry
+            </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           <button
             type="button"
             onClick={() => setShowGrid(!showGrid)}
             className={cn(
-              'rounded-md px-2.5 py-1 text-[11px] font-medium border transition-colors cursor-pointer',
+              'rounded-md px-3 py-1.5 text-xs font-medium border transition-colors cursor-pointer',
               showGrid
-                ? 'bg-[#181818] border-[#303030] text-neutral-300'
+                ? 'bg-[#181818] border-[#333333] text-neutral-200'
                 : 'bg-transparent border-[#222222] text-neutral-500 hover:text-neutral-300'
             )}
           >
             Grid: {showGrid ? 'ON' : 'OFF'}
           </button>
-          <div className="flex items-center gap-1.5 rounded-md bg-[#161616] border border-[#282828] px-2.5 py-1 text-[11px] font-medium text-emerald-400">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400 animate-pulse" />
+          <div className="flex items-center gap-2 rounded-md bg-[#141414] border border-[#2a2a2a] px-3 py-1.5 text-xs font-semibold text-emerald-400">
+            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
             <span>{vectorMatch}% Vector Fit</span>
           </div>
         </div>
       </div>
 
       {/* SVG Visualization Canvas */}
-      <div className="relative w-full aspect-[2/1] min-h-[300px] max-h-[420px] bg-[#090909] select-none">
+      <div className="relative w-full bg-[#080808] select-none">
         <svg
-          viewBox="0 0 800 400"
-          className="w-full h-full"
+          viewBox="0 0 900 440"
+          className="w-full h-auto min-h-[340px] max-h-[460px]"
           preserveAspectRatio="xMidYMid meet"
         >
           <defs>
             {/* Grid Pattern */}
-            <pattern id="graph-grid" width="32" height="32" patternUnits="userSpaceOnUse">
-              <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#161616" strokeWidth="0.75" />
+            <pattern id="graph-grid" width="36" height="36" patternUnits="userSpaceOnUse">
+              <path d="M 36 0 L 0 0 0 36" fill="none" stroke="#161616" strokeWidth="0.75" />
             </pattern>
 
             {/* Radial glow around center */}
             <radialGradient id="centerGlow" cx="50%" cy="50%" r="50%">
-              <stop offset="0%" stopColor="#6366f1" stopOpacity="0.22" />
+              <stop offset="0%" stopColor="#6366f1" stopOpacity="0.25" />
+              <stop offset="60%" stopColor="#4f46e5" stopOpacity="0.08" />
               <stop offset="100%" stopColor="#6366f1" stopOpacity="0" />
             </radialGradient>
 
             {/* Link Gradients */}
             <linearGradient id="linkGradActive" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#818cf8" stopOpacity="0.9" />
-              <stop offset="100%" stopColor="#06b6d4" stopOpacity="0.8" />
+              <stop offset="0%" stopColor="#818cf8" stopOpacity="0.95" />
+              <stop offset="100%" stopColor="#06b6d4" stopOpacity="0.85" />
             </linearGradient>
             <linearGradient id="linkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#2e2e2e" stopOpacity="0.6" />
-              <stop offset="100%" stopColor="#222222" stopOpacity="0.3" />
+              <stop offset="0%" stopColor="#383838" stopOpacity="0.5" />
+              <stop offset="100%" stopColor="#222222" stopOpacity="0.25" />
             </linearGradient>
           </defs>
 
           {/* Background Grid */}
           {showGrid && <rect width="100%" height="100%" fill="url(#graph-grid)" />}
 
-          {/* Ambient center pulse circle */}
-          <circle cx="400" cy="200" r="140" fill="url(#centerGlow)" />
-          <circle cx="400" cy="200" r="180" fill="none" stroke="#1c1c1c" strokeWidth="1" strokeDasharray="3 4" />
-          <circle cx="400" cy="200" r="100" fill="none" stroke="#242424" strokeWidth="1" strokeDasharray="2 3" />
+          {/* Ambient center pulse circles */}
+          <circle cx="450" cy="220" r="170" fill="url(#centerGlow)" />
+          <circle cx="450" cy="220" r="210" fill="none" stroke="#1a1a1a" strokeWidth="1" strokeDasharray="4 4" />
+          <circle cx="450" cy="220" r="130" fill="none" stroke="#222222" strokeWidth="1" strokeDasharray="3 3" />
 
           {/* Connecting Links from Center to Nodes */}
           {nodes.map((node) => {
@@ -185,21 +192,22 @@ export const ConceptGraph: React.FC<ConceptGraphProps> = ({ trend, className }) 
             return (
               <g key={`link-${node.id}`}>
                 <line
-                  x1="400"
-                  y1="200"
+                  x1="450"
+                  y1="220"
                   x2={node.x}
                   y2={node.y}
                   stroke={isHovered ? 'url(#linkGradActive)' : 'url(#linkGrad)'}
                   strokeWidth={isHovered ? 2.5 : 1.2}
-                  strokeDasharray={isHovered ? 'none' : '4 3'}
+                  strokeDasharray={isHovered ? 'none' : '4 4'}
                   className="transition-all duration-200"
                 />
-                {/* Mid-point signal particle */}
+                {/* Mid-point signal pulse indicator */}
                 <circle
-                  cx={(400 + node.x) / 2}
-                  cy={(200 + node.y) / 2}
-                  r={isHovered ? 3 : 1.5}
-                  fill={isHovered ? '#818cf8' : '#333333'}
+                  cx={(450 + node.x) / 2}
+                  cy={(220 + node.y) / 2}
+                  r={isHovered ? 3.5 : 2}
+                  fill={isHovered ? '#818cf8' : '#3a3a3a'}
+                  className="transition-all duration-200"
                 />
               </g>
             );
@@ -213,24 +221,50 @@ export const ConceptGraph: React.FC<ConceptGraphProps> = ({ trend, className }) 
                 key={`node-${node.id}`}
                 transform={`translate(${node.x}, ${node.y})`}
                 onMouseEnter={() => setActiveNodeId(node.id)}
-                onMouseLeave={() => setActiveNodeId(null)}
+                onClick={() => setActiveNodeId(activeNodeId === node.id ? null : node.id)}
                 className="cursor-pointer group"
               >
+                {/* Node Outer Halo Glow on Hover */}
+                {isHovered && (
+                  <circle
+                    r="42"
+                    fill="none"
+                    stroke="#6366f1"
+                    strokeWidth="1.5"
+                    strokeOpacity="0.4"
+                    strokeDasharray="3 3"
+                    className="animate-spin-slow"
+                  />
+                )}
+
                 {/* Node Outer Ring */}
                 <circle
-                  r={isHovered ? 34 : 26}
+                  r={isHovered ? 32 : 25}
                   fill="#141414"
-                  stroke={isHovered ? '#6366f1' : '#282828'}
+                  stroke={isHovered ? '#818cf8' : '#282828'}
                   strokeWidth={isHovered ? 2 : 1}
                   className="transition-all duration-200"
                 />
                 {/* Node Inner Ring */}
                 <circle
-                  r={isHovered ? 28 : 22}
-                  fill="#111111"
-                  stroke={isHovered ? '#818cf8' : '#1f1f1f'}
+                  r={isHovered ? 26 : 21}
+                  fill="#101010"
+                  stroke={isHovered ? '#6366f1' : '#1e1e1e'}
                   strokeWidth={1}
                 />
+
+                {/* Center Icon */}
+                <foreignObject x="-9" y="-9" width="18" height="18" className="pointer-events-none">
+                  <div className="flex items-center justify-center w-full h-full">
+                    <node.icon
+                      className={cn(
+                        'h-3.5 w-3.5 transition-colors',
+                        isHovered ? 'text-indigo-400' : 'text-neutral-400'
+                      )}
+                    />
+                  </div>
+                </foreignObject>
+
                 {/* Node Status Dot */}
                 <circle
                   cx="14"
@@ -239,12 +273,12 @@ export const ConceptGraph: React.FC<ConceptGraphProps> = ({ trend, className }) 
                   fill={node.status === 'high' ? '#f59e0b' : '#10b981'}
                 />
 
-                {/* Node Label (Text below) */}
+                {/* Node Label (Clean, crisp, high-contrast) */}
                 <text
-                  y="40"
+                  y="42"
                   textAnchor="middle"
-                  fill={isHovered ? '#ffffff' : '#a1a1aa'}
-                  fontSize="10"
+                  fill={isHovered ? '#ffffff' : '#e4e4e7'}
+                  fontSize="11"
                   fontWeight="600"
                   className="font-sora tracking-tight transition-colors"
                 >
@@ -252,10 +286,10 @@ export const ConceptGraph: React.FC<ConceptGraphProps> = ({ trend, className }) 
                 </text>
                 {/* Node Metric Value */}
                 <text
-                  y="52"
+                  y="56"
                   textAnchor="middle"
-                  fill={isHovered ? '#818cf8' : '#71717a'}
-                  fontSize="9"
+                  fill={isHovered ? '#818cf8' : '#a1a1aa'}
+                  fontSize="10"
                   fontWeight="500"
                   className="font-mono"
                 >
@@ -266,17 +300,17 @@ export const ConceptGraph: React.FC<ConceptGraphProps> = ({ trend, className }) 
           })}
 
           {/* Central Target Concept Node */}
-          <g transform="translate(400, 200)" className="cursor-pointer">
+          <g transform="translate(450, 220)" className="cursor-pointer">
             {/* Pulsing ring */}
-            <circle r="48" fill="#141329" stroke="#4f46e5" strokeWidth="1.5" strokeDasharray="4 2" />
-            <circle r="40" fill="#100e24" stroke="#6366f1" strokeWidth="2" />
-            <circle r="34" fill="#0d0c1e" />
+            <circle r="52" fill="#141329" stroke="#4f46e5" strokeWidth="1.5" strokeDasharray="4 2" />
+            <circle r="44" fill="#100e24" stroke="#6366f1" strokeWidth="2" />
+            <circle r="36" fill="#0d0c1e" />
 
             <text
-              y="-6"
+              y="-10"
               textAnchor="middle"
               fill="#818cf8"
-              fontSize="8"
+              fontSize="9"
               fontWeight="800"
               className="font-sora uppercase tracking-widest"
             >
@@ -286,48 +320,64 @@ export const ConceptGraph: React.FC<ConceptGraphProps> = ({ trend, className }) 
               y="10"
               textAnchor="middle"
               fill="#ffffff"
-              fontSize="12"
+              fontSize="14"
               fontWeight="700"
               className="font-sora"
             >
               {oppScore}/100 Fit
             </text>
             <text
-              y="22"
+              y="24"
               textAnchor="middle"
               fill="#a1a1aa"
-              fontSize="8"
+              fontSize="9"
               fontWeight="500"
+              className="font-mono"
             >
               Qdrant Vector
             </text>
           </g>
         </svg>
+      </div>
 
-        {/* Floating Node Details Card on Hover / Active */}
-        <div className="absolute bottom-3 left-3 right-3 sm:right-auto sm:max-w-xs rounded-lg border border-[#282828] bg-[#121212]/95 backdrop-blur-md p-3 shadow-2xl transition-all">
-          <div className="flex items-center justify-between gap-2">
-            <div className="flex items-center gap-1.5">
-              <Info className="h-3.5 w-3.5 text-indigo-400" />
-              <span className="text-xs font-semibold text-white">
+      {/* DEDICATED TELEMETRY FOOTER BAR - Completely Separated, NEVER Covers Any Graph Nodes! */}
+      <div className="border-t border-[#1e1e1e] bg-[#0d0d0d] px-5 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-start sm:items-center gap-3">
+          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-indigo-950/60 border border-indigo-700/40 text-indigo-400 mt-0.5 sm:mt-0">
+            <Info className="h-4 w-4" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-white">
                 {activeNode ? activeNode.label : 'Active Concept Cluster'}
               </span>
+              <span className="rounded bg-[#1a1a1a] border border-[#2a2a2a] px-2 py-0.5 text-[10px] font-mono text-neutral-400">
+                {activeNode ? activeNode.category : 'System Topology'}
+              </span>
             </div>
-            <span className="text-[10px] font-mono text-neutral-400">
-              {activeNode ? activeNode.category : 'System Topology'}
-            </span>
+            <p className="text-xs text-neutral-300 mt-0.5 leading-snug">
+              {activeNode ? (
+                <>
+                  Signals evaluate <strong className="text-white">{activeNode.value}</strong>. Strong alignment with creator niche vector.
+                </>
+              ) : (
+                <>
+                  Target: <strong className="text-white">&ldquo;{conceptTitle}&rdquo;</strong>. Hover or click any node to inspect relationship telemetry.
+                </>
+              )}
+            </p>
           </div>
-          <p className="mt-1 text-[11px] leading-relaxed text-neutral-300">
-            {activeNode ? (
-              <>
-                Signals evaluate <span className="font-semibold text-white">{activeNode.value}</span>. Strong alignment with creator niche archetype.
-              </>
-            ) : (
-              <>
-                Target: <span className="font-semibold text-white">&ldquo;{conceptTitle}&rdquo;</span>. Hover over any node to inspect relationship telemetry.
-              </>
-            )}
-          </p>
+        </div>
+
+        <div className="flex items-center gap-4 text-xs shrink-0 self-end sm:self-auto border-t sm:border-t-0 border-[#1c1c1c] pt-2 sm:pt-0">
+          <div className="flex items-center gap-1.5 text-neutral-400">
+            <span className="h-2 w-2 rounded-full bg-emerald-400" />
+            <span>Optimal</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-neutral-400">
+            <span className="h-2 w-2 rounded-full bg-amber-400" />
+            <span>Spike Velocity</span>
+          </div>
         </div>
       </div>
     </div>
