@@ -112,116 +112,106 @@ export const DashboardPage: React.FC = () => {
   const currentForecast =
     FORECAST_PERIOD_DATA[forecastPeriod] ?? FORECAST_PERIOD_DATA['28d'];
 
-  return (
-    <div className="space-y-7 animate-in text-[#ededed]">
-      {/* Workspace Header Greeting */}
-      <div className="flex flex-col justify-between gap-4 border-b border-[#1c1c1c] pb-6 sm:flex-row sm:items-center">
-        <div className="flex items-center gap-3.5">
-          {channelContext?.thumbnail_url ? (
-            <img
-              src={channelContext.thumbnail_url}
-              alt=""
-              className="h-12 w-12 rounded-xl border border-[#2a2a2a] object-cover"
-            />
-          ) : (
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#1a1a1a] border border-[#2a2a2a] text-base font-bold text-white">
-              {user?.full_name?.charAt(0) || "C"}
-            </div>
-          )}
-          <div>
-            <div className="flex flex-wrap items-center gap-2">
-              <h1 className="text-lg font-bold tracking-tight text-[#ededed] sm:text-xl">
-                Welcome back, {user?.full_name?.split(" ")[0] || "Creator"}
-              </h1>
-              <Badge variant="brand" className="text-[10px]">
-                <Zap className="h-3 w-3 text-indigo-400" />
-                Qdrant Vector AI
-              </Badge>
-            </div>
-            <p className="mt-0.5 text-xs text-neutral-400">
-              {channelContext?.name ? (
-                <>
-                  Channel: <span className="font-semibold text-neutral-200">{channelContext.name}</span>
-                  {channelContext.subscriber_count > 0 && ` (${formatSubs(channelContext.subscriber_count)} subs)`}
-                  {" • "}Live signals scanned across your niche
-                </>
-              ) : (
-                "Here's what is changing in your content space."
-              )}
-            </p>
-          </div>
-        </div>
+  const displayName = user?.full_name?.toLowerCase().includes("navnath")
+    ? "Ndk"
+    : (user?.full_name?.split(" ")[0] || "Ndk");
 
-        <div className="flex shrink-0 items-center gap-2">
-          <Link to="/app/trends">
-            <Button variant="secondary" size="sm">
-              <TrendingUp className="h-3.5 w-3.5" />
-              All 15 Trends
-            </Button>
-          </Link>
-          <Link to="/app/strategy">
-            <Button size="sm">
-              <Sparkles className="h-3.5 w-3.5" />
-              AI Briefs
-            </Button>
-          </Link>
-        </div>
+  return (
+    <div className="space-y-8 pb-12">
+      {/* ChatGPT Center Hero Greeting */}
+      <div className="pt-10 pb-4 text-center space-y-2">
+        <h1 className="font-sora text-3xl sm:text-4xl font-semibold tracking-tight text-white">
+          How can I help, {displayName}?
+        </h1>
+        <p className="text-xs text-neutral-400">
+          CreatorIQ Intelligence &bull; Powered by Qdrant Vector AI &amp; YouTube Trend Engine
+        </p>
       </div>
 
-      {/* Intelligence Chat Bar (Wireframe Layout Component) */}
-      <div className="rounded-xl border border-[#242424] bg-[#111111] p-4 text-[#ededed]">
-        <div className="flex flex-col gap-2.5">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Sparkles className="h-3.5 w-3.5 text-indigo-400" />
-              <span className="text-xs font-semibold uppercase tracking-wider text-neutral-300">
-                Ask CreatorIQ
-              </span>
-            </div>
-            <span className="text-[11px] text-neutral-500">
-              Ask about trends, your channel, or what to create next
-            </span>
-          </div>
+      {/* ChatGPT-Style Capsule Input Bar */}
+      <div className="mx-auto w-full max-w-2xl">
+        <form
+          onSubmit={handleChatSubmit}
+          className="relative flex items-center rounded-3xl border border-[#2e2e2e] bg-[#212121] px-4 py-3 shadow-xl shadow-black/40 focus-within:border-[#404040] focus-within:ring-1 focus-within:ring-[#404040] transition-all"
+        >
+          {/* Left Plus Attachment Action */}
+          <button
+            type="button"
+            className="mr-2.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-neutral-400 hover:bg-[#2c2c2c] hover:text-white transition-colors cursor-pointer"
+            title="Attach signal context"
+            onClick={() => handleQuickPrompt("Analyze my connected channel upload velocity")}
+          >
+            <span className="text-xl font-light leading-none">+</span>
+          </button>
 
-          <form onSubmit={handleChatSubmit} className="relative">
-            <input
-              type="text"
-              value={chatQuery}
-              onChange={(e) => setChatQuery(e.target.value)}
-              placeholder="Ask about trends, your channel, or what to create next..."
-              className="w-full rounded-lg border border-[#282828] bg-[#161616] px-3.5 py-2.5 pr-10 text-xs text-[#ededed] placeholder-neutral-500 focus:border-neutral-500 focus:outline-none transition-all"
-            />
+          {/* Central Input */}
+          <input
+            type="text"
+            value={chatQuery}
+            onChange={(e) => setChatQuery(e.target.value)}
+            placeholder="Ask anything"
+            className="flex-1 bg-transparent text-sm text-white placeholder-neutral-500 focus:outline-none border-0"
+          />
+
+          {/* Right Action Icons (Think chip, Mic, Audio/Send) */}
+          <div className="flex items-center gap-2 shrink-0 ml-2">
+            <button
+              type="button"
+              onClick={() => handleQuickPrompt(chatQuery ? `Deep research: ${chatQuery}` : "Deep research trending concepts")}
+              className="flex items-center gap-1.5 rounded-full border border-[#333333] bg-[#181818] px-3 py-1.5 text-xs font-medium text-neutral-300 hover:border-[#444444] hover:text-white transition-colors cursor-pointer"
+            >
+              <Lightbulb className="h-3.5 w-3.5 text-neutral-400" />
+              <span>Think</span>
+            </button>
+
+            <button
+              type="button"
+              className="flex h-8 w-8 items-center justify-center rounded-full text-neutral-400 hover:bg-[#2a2a2a] hover:text-white transition-colors cursor-pointer"
+              title="Voice dictation"
+              onClick={() => handleQuickPrompt("Brainstorm video ideas for my niche")}
+            >
+              <Mic className="h-4 w-4" />
+            </button>
+
             <button
               type="submit"
-              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md bg-white p-1.5 text-black hover:bg-neutral-200 transition-colors cursor-pointer"
-              title="Submit prompt to Strategy AI"
+              className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-white hover:bg-blue-500 transition-colors cursor-pointer shadow-sm"
+              title="Send prompt to AI"
             >
-              <ArrowRight className="h-3.5 w-3.5" />
+              {chatQuery.trim().length > 0 ? (
+                <ArrowRight className="h-4 w-4" />
+              ) : (
+                <span className="flex items-center justify-center text-xs tracking-tighter font-bold">
+                  ılı
+                </span>
+              )}
             </button>
-          </form>
-
-          <div className="flex flex-wrap items-center gap-2 text-xs">
-            <span className="text-[11px] text-neutral-500 font-medium">Suggestions:</span>
-            {[
-              "What should I create this week?",
-              "Why is this trend growing?",
-              "Top 3 viral hooks for my niche",
-            ].map((prompt, idx) => (
-              <button
-                key={idx}
-                type="button"
-                onClick={() => handleQuickPrompt(prompt)}
-                className="rounded-md border border-[#242424] bg-[#161616] px-2.5 py-1 text-[11px] text-neutral-400 hover:border-[#383838] hover:text-white transition-colors cursor-pointer"
-              >
-                {prompt}
-              </button>
-            ))}
           </div>
+        </form>
+
+        {/* ChatGPT Prompt Suggestion Pills */}
+        <div className="mt-3 flex flex-wrap items-center justify-center gap-2 text-xs">
+          {[
+            { label: "What should I create this week?", icon: Sparkles },
+            { label: "Why is this trend growing?", icon: TrendingUp },
+            { label: "Viral hook for my niche", icon: Zap },
+            { label: "Compare Shorts vs Long-form", icon: Film },
+          ].map((prompt, idx) => (
+            <button
+              key={idx}
+              type="button"
+              onClick={() => handleQuickPrompt(prompt.label)}
+              className="inline-flex items-center gap-1.5 rounded-full border border-[#2a2a2a] bg-[#161616] px-3.5 py-1.5 text-xs text-neutral-300 hover:border-[#3a3a3a] hover:bg-[#1f1f1f] hover:text-white transition-colors cursor-pointer shadow-xs"
+            >
+              <prompt.icon className="h-3 w-3 text-neutral-400" />
+              <span>{prompt.label}</span>
+            </button>
+          ))}
         </div>
       </div>
 
       {/* Channel Metric Stat Cards */}
-      <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-4 pt-4">
         {stats.map((stat, i) => (
           <StatCard
             key={i}

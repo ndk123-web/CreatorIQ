@@ -14,6 +14,7 @@ import {
   X,
   User,
   LogOut,
+  Plus,
 } from 'lucide-react';
 import { useAuthStore } from '../stores/useAuthStore';
 import { cn } from '../lib/utils';
@@ -43,8 +44,23 @@ function SidebarNav({
     );
 
   return (
-    <nav className="flex flex-1 flex-col gap-1 overflow-y-auto px-3 py-4 custom-scrollbar">
-      <div className="mb-2 px-2 text-[10px] font-semibold uppercase tracking-wider text-[#545458]">
+    <nav className="flex flex-1 flex-col gap-1 overflow-y-auto px-3 py-3 custom-scrollbar">
+      {/* ChatGPT '+ New chat' Pill Button */}
+      <div className="mb-2.5">
+        <Link
+          to="/app/strategy"
+          onClick={onNavigate}
+          className="flex items-center justify-between rounded-lg border border-[#2c2c2c] bg-[#161616] px-3 py-2 text-xs font-semibold text-white hover:bg-[#202020] hover:border-[#383838] transition-all shadow-xs group"
+        >
+          <div className="flex items-center gap-2">
+            <Plus className="h-3.5 w-3.5 text-neutral-400 group-hover:text-white" />
+            <span>New chat</span>
+          </div>
+          <span className="text-[10px] font-mono text-neutral-500">⌘K</span>
+        </Link>
+      </div>
+
+      <div className="mb-1.5 px-2 text-[10px] font-semibold uppercase tracking-wider text-[#545458]">
         Platform
       </div>
       {navItems.map((item) => (
@@ -62,6 +78,43 @@ function SidebarNav({
           )}
         </NavLink>
       ))}
+
+      {/* ChatGPT-Style Pinned Section */}
+      <div className="mt-4 pt-3 border-t border-[#1a1a1a]">
+        <div className="mb-1.5 px-2 text-[10px] font-semibold uppercase tracking-wider text-[#545458]">
+          Pinned
+        </div>
+        <div className="space-y-0.5">
+          <Link
+            to="/app/strategy"
+            state={{ topic: "Viral Velocity Signals", autoGenerate: true }}
+            onClick={onNavigate}
+            className="flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs text-neutral-400 hover:bg-[#141414] hover:text-white transition-colors"
+          >
+            <span className="h-2 w-2 rounded-full bg-cyan-400 shrink-0" />
+            <span className="truncate">Viral Velocity Signals</span>
+          </Link>
+          <Link
+            to="/app/strategy"
+            state={{ topic: "Hook Architect", autoGenerate: true }}
+            onClick={onNavigate}
+            className="flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs text-neutral-400 hover:bg-[#141414] hover:text-white transition-colors"
+          >
+            <span className="h-2 w-2 rounded-full bg-purple-400 shrink-0" />
+            <span className="truncate">Hook Architect</span>
+          </Link>
+          <Link
+            to="/app/strategy"
+            state={{ topic: "Niche Opportunity Scan", autoGenerate: true }}
+            onClick={onNavigate}
+            className="flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-xs text-neutral-400 hover:bg-[#141414] hover:text-white transition-colors"
+          >
+            <span className="h-2 w-2 rounded-full bg-emerald-400 shrink-0" />
+            <span className="truncate">Niche Opportunity Scan</span>
+          </Link>
+        </div>
+      </div>
+
       <div className="mt-auto border-t border-[#1e1e1e] pt-3">
         <NavLink to="/app/settings" className={linkClass} onClick={onNavigate}>
           {({ isActive }) => (
@@ -85,6 +138,9 @@ export const MainLayout: React.FC = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const user = useAuthStore((s) => s.user);
 
+  const userInitial = user?.full_name?.charAt(0) || 'N';
+  const userName = user?.full_name || 'Navnath Kadam';
+
   return (
     <div className="app-shell flex min-h-screen bg-[#0a0a0a] text-[#ededed]">
       {/* Desktop sidebar */}
@@ -104,16 +160,34 @@ export const MainLayout: React.FC = () => {
             </div>
           </Link>
         </div>
+
         <SidebarNav />
-        <div className="border-t border-[#1a1a1a] p-3">
-          <button
-            type="button"
-            onClick={() => useAuthStore.getState().logout()}
-            className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-[#71717a] transition-colors hover:bg-[#1a1212] hover:text-[#f87171] cursor-pointer"
-          >
-            <LogOut className="h-3.5 w-3.5" />
-            Log out
-          </button>
+
+        {/* ChatGPT-Style Bottom User Pill */}
+        <div className="border-t border-[#1a1a1a] p-2.5">
+          <div className="flex items-center justify-between gap-2 rounded-xl p-2 hover:bg-[#141414] transition-colors">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-purple-600 text-xs font-bold text-white shadow-xs">
+                {userInitial}
+              </div>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-xs font-semibold text-white leading-tight">
+                  {userName}
+                </p>
+                <span className="inline-block text-[10px] text-neutral-500 font-medium">
+                  Go &bull; Active
+                </span>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => useAuthStore.getState().logout()}
+              className="rounded-lg p-1.5 text-neutral-500 hover:bg-[#1f1616] hover:text-red-400 transition-colors cursor-pointer"
+              title="Log out"
+            >
+              <LogOut className="h-3.5 w-3.5" />
+            </button>
+          </div>
         </div>
       </aside>
 
