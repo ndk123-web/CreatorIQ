@@ -94,6 +94,22 @@ export const DashboardPage: React.FC = () => {
     });
   };
 
+  const [chatQuery, setChatQuery] = useState("");
+
+  const handleChatSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!chatQuery.trim()) return;
+    navigate("/app/strategy", {
+      state: { topic: chatQuery, autoGenerate: true },
+    });
+  };
+
+  const handleQuickPrompt = (promptText: string) => {
+    navigate("/app/strategy", {
+      state: { topic: promptText, autoGenerate: true },
+    });
+  };
+
   const topTrends = trends.slice(0, 4);
   const currentForecast =
     FORECAST_PERIOD_DATA[forecastPeriod] ?? FORECAST_PERIOD_DATA['28d'];
@@ -175,6 +191,64 @@ export const DashboardPage: React.FC = () => {
         </div>
       </div>
 
+      {/* Prominent Chat Bar (Directly from Dashboard Wireframe Diagram) */}
+      <div className="relative overflow-hidden rounded-2xl border border-brand-300/70 bg-gradient-to-r from-slate-900 via-neutral-900 to-indigo-950 p-5 text-white shadow-xl shadow-indigo-950/20">
+        <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-brand-500/20 blur-3xl" />
+        <div className="relative z-10 flex flex-col gap-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand-500/20 text-brand-400 ring-1 ring-brand-400/30">
+                <Sparkles className="h-4 w-4" />
+              </div>
+              <span className="text-xs font-bold uppercase tracking-wider text-brand-300">
+                AI Strategy Chat & Concept Generator
+              </span>
+            </div>
+            <span className="hidden sm:inline-flex text-[11px] font-medium text-neutral-400">
+              Ask anything or prompt video ideas directly
+            </span>
+          </div>
+
+          <form onSubmit={handleChatSubmit} className="flex gap-2">
+            <div className="relative flex-1">
+              <input
+                type="text"
+                value={chatQuery}
+                onChange={(e) => setChatQuery(e.target.value)}
+                placeholder="Ask AI: 'Generate viral Shorts hooks for AI tech' or 'What topic should I post next?'..."
+                className="w-full rounded-xl border border-white/15 bg-white/10 px-4 py-3 pl-4 pr-12 text-sm text-white placeholder-neutral-400 shadow-inner backdrop-blur-md focus:border-brand-400 focus:bg-white/15 focus:outline-none focus:ring-2 focus:ring-brand-500/30 transition-all"
+              />
+              <button
+                type="submit"
+                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg bg-brand-600 p-2 text-white shadow-md hover:bg-brand-500 transition-colors"
+                title="Send Prompt to Strategy AI"
+              >
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            </div>
+          </form>
+
+          {/* Preset Quick Prompts */}
+          <div className="flex flex-wrap items-center gap-2 pt-1 text-xs">
+            <span className="text-[11px] font-semibold text-neutral-400">Try quick prompts:</span>
+            {[
+              "🔥 Top 3 viral hooks for my niche",
+              "💡 Video title ideas for Python series",
+              "📈 Analyze audience retention strategy",
+            ].map((prompt, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => handleQuickPrompt(prompt.replace(/^[^a-zA-Z0-9]+/, ""))}
+                className="rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] font-medium text-neutral-300 hover:border-brand-400/50 hover:bg-white/10 hover:text-white transition-all cursor-pointer"
+              >
+                {prompt}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
       {/* Channel Stat Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((stat, i) => (
@@ -189,16 +263,15 @@ export const DashboardPage: React.FC = () => {
         ))}
       </div>
 
-      {/* Top Predicted Trends Highlight Section */}
+      {/* Top Predicted Trends Highlight Section (3-Card Concept Grid matching Wireframe) */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-lg font-bold text-neutral-900">
-              Top Predicted Trends For You
+              Top Predicted Concept Cards
             </h2>
             <p className="text-xs text-neutral-500">
-              Scanned from 200+ live signals & vector-matched to your channel
-              profile.
+              Click any card to view detailed performance graph, view estimates & strategy.
             </p>
           </div>
           <Link
@@ -223,96 +296,75 @@ export const DashboardPage: React.FC = () => {
             </p>
           </Card>
         ) : (
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {topTrends.map((trend: any) => (
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+            {topTrends.slice(0, 3).map((trend: any) => (
               <Card
                 key={trend.id}
                 variant="elevated"
                 hover
-                className="group flex cursor-pointer flex-col justify-between gap-4 transition-transform duration-200 hover:-translate-y-0.5"
+                className="group flex cursor-pointer flex-col justify-between gap-4 border-neutral-200/90 hover:border-brand-300 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
                 onClick={() => navigate(`/app/trends/detail/${trend.id}`)}
               >
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <div className="flex items-start justify-between gap-2">
                     <div className="flex flex-wrap gap-1.5">
-                      {trend.niches?.slice(0, 2).map((tag: string) => (
-                        <Badge key={tag} variant="brand">
+                      {trend.niches?.slice(0, 1).map((tag: string) => (
+                        <Badge key={tag} variant="brand" className="text-[10px]">
                           {tag}
                         </Badge>
                       ))}
-                      <Badge variant="neutral">{trend.archetype}</Badge>
-                      {trend.vector_similarity && (
-                        <Badge
-                          variant="neutral"
-                          className="border-emerald-200 bg-emerald-50 text-emerald-700"
-                        >
-                          {Math.round(trend.vector_similarity * 100)}% Vector
-                          Match
-                        </Badge>
-                      )}
+                      <Badge variant="neutral" className="text-[10px]">{trend.archetype}</Badge>
                     </div>
                     {trend.opportunity_score != null && (
-                      <span className="shrink-0 rounded-md bg-neutral-900 px-2 py-0.5 text-xs font-bold text-white shadow-sm">
-                        {Math.round(trend.opportunity_score ?? trend.tvs_score)}{" "}
-                        Fit
+                      <span className="shrink-0 rounded-lg bg-neutral-900 px-2 py-0.5 text-[11px] font-bold text-white shadow-xs">
+                        {Math.round(trend.opportunity_score ?? trend.tvs_score)} Fit
                       </span>
                     )}
                   </div>
 
-                  <h3 className="text-base font-bold text-neutral-900 group-hover:text-brand-600 transition-colors">
+                  <h3 className="text-base font-bold text-neutral-900 group-hover:text-brand-600 transition-colors line-clamp-2">
                     {cleanTrendTitle(trend.topic)}
                   </h3>
 
-                  {/* Video Concept Highlight */}
-                  <div className="rounded-xl border border-brand-200/90 bg-gradient-to-br from-brand-50/90 via-indigo-50/30 to-purple-50/20 p-3 shadow-2xs transition-all group-hover:border-brand-300">
-                    <div className="flex items-center justify-between gap-2 mb-1.5">
-                      <span className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-brand-800">
-                        <Sparkles className="h-3.5 w-3.5 text-brand-600" />
+                  {/* Video Concept Card Box */}
+                  <div className="rounded-xl border border-brand-200/90 bg-gradient-to-br from-brand-50/90 via-indigo-50/30 to-purple-50/20 p-3 shadow-2xs transition-all group-hover:border-brand-400">
+                    <div className="flex items-center justify-between gap-2 mb-1">
+                      <span className="inline-flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-brand-800">
+                        <Sparkles className="h-3 w-3 text-brand-600" />
                         Video Concept
                       </span>
-                      <span className="inline-flex items-center gap-1 rounded-full bg-brand-100/80 px-2 py-0.5 text-[10px] font-semibold text-brand-700 border border-brand-200/60">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-brand-100/80 px-1.5 py-0.5 text-[9px] font-semibold text-brand-700 border border-brand-200/60">
                         <Film className="h-2.5 w-2.5" />
                         {resolveVideoConceptBadge(trend)}
                       </span>
                     </div>
-                    <p className="text-xs sm:text-sm font-semibold text-neutral-900 leading-snug">
+                    <p className="text-xs font-semibold text-neutral-900 leading-snug line-clamp-2">
                       &ldquo;{resolveVideoConcept(trend)}&rdquo;
                     </p>
                   </div>
 
                   {trend.why_predicted && (
-                    <div className="rounded-lg border border-neutral-200/80 bg-neutral-50/80 px-2.5 py-2 text-xs text-neutral-700">
+                    <div className="rounded-lg border border-neutral-200/80 bg-neutral-50/80 px-2.5 py-2 text-xs text-neutral-700 line-clamp-2">
                       <span className="font-semibold text-neutral-900">
                         Why Predicted:{" "}
                       </span>
                       {cleanTrendText(trend.why_predicted)}
                     </div>
                   )}
-
-                  {(trend.action_plan || trend.growth_tip) && (
-                    <div className="rounded-lg border border-neutral-200/80 bg-neutral-50/80 px-2.5 py-2 text-xs text-neutral-700">
-                      <span className="font-semibold text-neutral-900">
-                        Action Plan:{" "}
-                      </span>
-                      {cleanTrendText(trend.action_plan || trend.growth_tip)}
-                    </div>
-                  )}
                 </div>
 
                 <div className="flex items-center justify-between border-t border-neutral-100 pt-3">
-                  <span className="text-xs font-medium text-neutral-500">
-                    Velocity:{" "}
-                    <span className="font-semibold text-neutral-900">
-                      {trend.velocity}
-                    </span>
-                  </span>
+                  <div className="flex items-center gap-1 text-xs font-semibold text-brand-600 group-hover:text-brand-700">
+                    <span>View Concept Graph</span>
+                    <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                  </div>
                   <Button
                     size="sm"
                     onClick={(e) => handleQuickStrategy(trend, e)}
-                    className="shadow-sm"
+                    className="shadow-2xs text-xs px-2.5 py-1"
                   >
                     <Lightbulb className="h-3.5 w-3.5" />
-                    Strategy Brief
+                    Brief
                   </Button>
                 </div>
               </Card>
@@ -320,6 +372,8 @@ export const DashboardPage: React.FC = () => {
           </div>
         )}
       </div>
+
+
 
       {/* Performance Forecast Chart & Priority Insights (Harmonized Light Theme) */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">

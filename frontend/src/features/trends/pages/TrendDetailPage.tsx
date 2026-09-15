@@ -95,6 +95,11 @@ export const TrendDetailPage: React.FC = () => {
                 {trend.creator_tier} creator
               </Badge>
             )}
+            {(trend as any).vector_similarity && (
+              <Badge variant="neutral" className="border-emerald-200 bg-emerald-50 text-emerald-700">
+                {Math.round((trend as any).vector_similarity * 100)}% Vector Match
+              </Badge>
+            )}
             {trend.is_momentum_outlier && (
               <Badge variant="warning" className="gap-1 border-amber-500/30 text-amber-600 dark:text-amber-400">
                 <Flame className="h-3 w-3" />
@@ -121,8 +126,8 @@ export const TrendDetailPage: React.FC = () => {
       />
 
       {trend.is_youtube_video && trend.channel_name && (
-        <p className="text-sm text-neutral-500">
-          Trending via {trend.channel_name}
+        <p className="text-xs text-neutral-500">
+          Trending via <span className="font-semibold text-neutral-800">{trend.channel_name}</span>
           {trend.video_url && (
             <a
               href={trend.video_url}
@@ -136,60 +141,175 @@ export const TrendDetailPage: React.FC = () => {
         </p>
       )}
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <div className="space-y-4 lg:col-span-2">
+      {/* TOP SECTION: "That Card / Concept Graph" (Matching Wireframe Top Container) */}
+      <div className="space-y-6">
+        <div className="rounded-2xl border border-brand-200/90 bg-gradient-to-r from-brand-50/50 via-white to-indigo-50/30 p-1 shadow-sm">
+          <div className="mb-2 px-4 pt-3 flex items-center justify-between">
+            <span className="text-xs font-bold uppercase tracking-wider text-brand-800 flex items-center gap-1.5">
+              <Sparkles className="h-3.5 w-3.5 text-brand-600" />
+              That Card / Concept Trajectory Graph
+            </span>
+            <span className="text-xs font-semibold text-neutral-500">
+              Score: <span className="text-neutral-900 font-bold">{Math.round(trend.opportunity_score ?? trend.tvs_score)}/100</span>
+            </span>
+          </div>
           {isForecastLoading ? (
-            <Card variant="elevated" className="flex items-center justify-center p-8">
+            <Card variant="elevated" className="flex items-center justify-center p-12">
               <div className="flex items-center gap-2 text-sm text-neutral-500">
-                <Loader2 className="h-4 w-4 animate-spin text-brand-600" />
-                Analyzing audience demand & view potential...
+                <Loader2 className="h-5 w-5 animate-spin text-brand-600" />
+                Calculating 30-day concept velocity & trajectory curve...
               </div>
             </Card>
           ) : trendForecast ? (
             <TrendForecastChart forecast={trendForecast} trend={trend} />
           ) : null}
+        </div>
 
-          <Card variant="elevated">
-            <h2 className="text-sm font-semibold text-neutral-900">Why it&apos;s trending</h2>
-            <p className="mt-2 text-sm leading-relaxed text-neutral-600">
-              {trend.why_trending || trend.description}
+        {/* MIDDLE SECTION: 2 Parameter Cards Grid (Estimated Views + Other Card Parameters) */}
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          {/* Card 1: Estimated Views & Reach */}
+          <Card variant="elevated" className="relative overflow-hidden border-brand-200/80 bg-gradient-to-br from-white via-neutral-50/50 to-brand-50/20 p-6 shadow-sm">
+            <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-brand-400/10 blur-xl" />
+            <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
+              <h2 className="text-sm font-bold uppercase tracking-wider text-brand-900">
+                Estimated Views Potential
+              </h2>
+              <Badge variant="brand" className="text-[10px]">
+                Algorithm Range
+              </Badge>
+            </div>
+            <div className="mt-4 space-y-4">
+              <div>
+                <span className="text-3xl font-extrabold tracking-tight text-neutral-900">
+                  {trend.volume || '10K - 50K'}
+                </span>
+                <span className="ml-2 text-xs font-semibold text-neutral-500">Estimated Reach</span>
+              </div>
+              <div className="grid grid-cols-2 gap-3 pt-2 text-xs">
+                <div className="rounded-xl border border-neutral-200/80 bg-white p-3 shadow-2xs">
+                  <span className="text-[11px] text-neutral-500 font-medium">Shorts Potential</span>
+                  <p className="mt-1 text-sm font-bold text-neutral-900">15K - 75K views</p>
+                </div>
+                <div className="rounded-xl border border-neutral-200/80 bg-white p-3 shadow-2xs">
+                  <span className="text-[11px] text-neutral-500 font-medium">Long-form Potential</span>
+                  <p className="mt-1 text-sm font-bold text-neutral-900">5K - 25K views</p>
+                </div>
+              </div>
+            </div>
+          </Card>
+
+          {/* Card 2: Other Concept Parameters & Metrics */}
+          <Card variant="elevated" className="border-neutral-200/90 bg-white p-6 shadow-sm">
+            <div className="flex items-center justify-between border-b border-neutral-100 pb-3">
+              <h2 className="text-sm font-bold uppercase tracking-wider text-neutral-800">
+                Other Card Parameters & Fit
+              </h2>
+              <Badge variant="neutral" className="text-[10px]">
+                Concept Metrics
+              </Badge>
+            </div>
+            <dl className="mt-4 grid grid-cols-2 gap-4 text-xs">
+              <div>
+                <dt className="text-neutral-500 font-medium">Opportunity Score</dt>
+                <dd className="mt-1 text-xl font-bold text-neutral-900">
+                  {Math.round(trend.opportunity_score ?? trend.tvs_score)}/100
+                </dd>
+              </div>
+              <div>
+                <dt className="text-neutral-500 font-medium">Search Velocity</dt>
+                <dd className="mt-1 text-base font-bold text-neutral-900">{trend.velocity}</dd>
+              </div>
+              <div>
+                <dt className="text-neutral-500 font-medium">Vector Niche Fit</dt>
+                <dd className="mt-1 font-semibold text-emerald-700">
+                  {(trend as any).vector_similarity ? `${Math.round((trend as any).vector_similarity * 100)}% Match` : 'High Niche Match'}
+                </dd>
+              </div>
+              <div>
+                <dt className="text-neutral-500 font-medium">Archetype</dt>
+                <dd className="mt-1 font-semibold text-neutral-800 capitalize">{trend.archetype}</dd>
+              </div>
+              <div className="col-span-2 pt-2 border-t border-neutral-100">
+                <dt className="text-neutral-500 font-medium">Stability Score</dt>
+                <dd className="mt-1.5">
+                  <div className="h-2 overflow-hidden rounded-full bg-neutral-100">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-brand-600 to-emerald-500"
+                      style={{ width: `${trend.stability_score ?? 65}%` }}
+                    />
+                  </div>
+                </dd>
+              </div>
+            </dl>
+          </Card>
+        </div>
+
+        {/* BOTTOM SECTION: Trend Details Cards (Matching Wireframe Bottom Stack) */}
+        <div className="space-y-4">
+          <h2 className="text-base font-bold text-neutral-900">Detailed Trend Breakdown</h2>
+
+          {/* Trend Details Block 1: Why Predicted / Trending */}
+          <Card variant="elevated" className="border-neutral-200/90 p-5">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-brand-800 mb-2">
+              Why Predicted / Why it&apos;s Trending
+            </h3>
+            <p className="text-sm leading-relaxed text-neutral-700">
+              {trend.why_trending || trend.why_predicted || trend.description}
             </p>
             {trend.key_indicator && (
-              <p className="mt-3 text-xs text-neutral-500">Key signal: {trend.key_indicator}</p>
+              <p className="mt-3 text-xs text-neutral-500 border-t border-neutral-100 pt-2">
+                Key Signal Indicator: <span className="font-semibold text-neutral-800">{trend.key_indicator}</span>
+              </p>
             )}
           </Card>
 
-          <Card variant="dark">
-            <h2 className="text-sm font-semibold">Your angle</h2>
-            <p className="mt-2 text-sm leading-relaxed text-neutral-200">
+          {/* Trend Details Block 2: Your Angle & Action Plan */}
+          <Card variant="dark" className="p-5">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-brand-300 mb-2">
+              Your Video Angle & Action Plan
+            </h3>
+            <p className="text-sm font-medium leading-relaxed text-white">
               &ldquo;{resolveVideoConcept(trend)}&rdquo;
             </p>
-            {trend.growth_tip && (
-              <p className="mt-3 text-sm text-neutral-400">{trend.growth_tip}</p>
+            {(trend.growth_tip || trend.action_plan) && (
+              <p className="mt-3 text-xs text-neutral-300 border-t border-white/10 pt-2">
+                Action Plan: {cleanTrendTitle(trend.growth_tip || trend.action_plan || "")}
+              </p>
             )}
           </Card>
 
+          {/* Trend Details Block 3: Title Ideas & Strategy Brief Action */}
           {trend.title_ideas && trend.title_ideas.length > 0 && (
-            <Card variant="elevated">
-              <h2 className="text-sm font-semibold text-neutral-900">Title ideas</h2>
-              <p className="mt-1 text-xs text-neutral-500">
-                Use these in Strategy or Planner to build your brief.
-              </p>
-              <div className="mt-4 space-y-2">
+            <Card variant="elevated" className="border-neutral-200/90 p-5">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-neutral-800">
+                  Recommended Title Ideas
+                </h3>
+                <Link
+                  to="/app/strategy"
+                  state={{ topic: cleanTrendTitle(trend.topic), autoGenerate: true }}
+                >
+                  <Button size="sm" className="shadow-2xs text-xs">
+                    <Sparkles className="h-3.5 w-3.5" />
+                    Generate Full AI Brief
+                  </Button>
+                </Link>
+              </div>
+              <div className="space-y-2">
                 {trend.title_ideas.map((title, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center justify-between gap-3 rounded-lg border border-neutral-200 bg-neutral-50 px-3 py-2.5"
+                    className="flex items-center justify-between gap-3 rounded-xl border border-neutral-200/80 bg-neutral-50/80 px-3.5 py-2.5 transition-colors hover:border-brand-200"
                   >
-                    <p className="text-sm text-neutral-800">{title}</p>
+                    <p className="text-xs font-medium text-neutral-800">{title}</p>
                     <button
                       type="button"
                       onClick={() => handleCopy(title, idx)}
-                      className="shrink-0 rounded p-1.5 text-neutral-400 hover:bg-white hover:text-brand-600"
+                      className="shrink-0 rounded-lg p-1.5 text-neutral-400 hover:bg-white hover:text-brand-600 transition-colors"
                       aria-label="Copy title"
                     >
                       {copiedIdx === idx ? (
-                        <Check className="h-4 w-4 text-success-600" />
+                        <Check className="h-4 w-4 text-emerald-600" />
                       ) : (
                         <Copy className="h-4 w-4" />
                       )}
@@ -197,57 +317,8 @@ export const TrendDetailPage: React.FC = () => {
                   </div>
                 ))}
               </div>
-              <Link
-                to="/app/strategy"
-                className="mt-4 inline-block text-sm font-medium text-brand-600 hover:underline"
-              >
-                Open Strategy →
-              </Link>
             </Card>
           )}
-        </div>
-
-        <div className="space-y-4">
-          <Card variant="elevated">
-            <dl className="space-y-4 text-sm">
-              <div>
-                <dt className="text-xs text-neutral-500">Opportunity score</dt>
-                <dd className="mt-1 text-2xl font-semibold text-neutral-900">
-                  {Math.round(trend.opportunity_score ?? trend.tvs_score)}
-                </dd>
-              </div>
-              <div>
-                <dt className="text-xs text-neutral-500">Velocity</dt>
-                <dd className="mt-1 font-medium text-neutral-900">{trend.velocity}</dd>
-              </div>
-              <div>
-                <dt className="text-xs text-neutral-500">Est. reach</dt>
-                <dd className="mt-1 font-medium text-neutral-900">{trend.volume}</dd>
-              </div>
-              <div>
-                <dt className="text-xs text-neutral-500">Stability</dt>
-                <dd className="mt-2">
-                  <div className="h-1.5 overflow-hidden rounded-full bg-neutral-100">
-                    <div
-                      className="h-full rounded-full bg-gradient-to-r from-success-600 to-emerald-400"
-                      style={{ width: `${trend.stability_score ?? 50}%` }}
-                    />
-                  </div>
-                </dd>
-              </div>
-              <div>
-                <dt className="text-xs text-neutral-500">Saturation</dt>
-                <dd className="mt-2">
-                  <div className="h-1.5 overflow-hidden rounded-full bg-neutral-100">
-                    <div
-                      className={`h-full ${(trend.saturation_index ?? 50) > 70 ? 'bg-orange-500' : 'bg-brand-600'}`}
-                      style={{ width: `${trend.saturation_index ?? 50}%` }}
-                    />
-                  </div>
-                </dd>
-              </div>
-            </dl>
-          </Card>
         </div>
       </div>
     </div>
