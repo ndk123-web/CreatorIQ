@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, Outlet } from 'react-router';
+import { Link, NavLink, Outlet } from 'react-router';
 import logo from '../assets/logo.png';
 import {
   LayoutDashboard,
@@ -90,17 +90,19 @@ export const MainLayout: React.FC = () => {
       {/* Desktop sidebar */}
       <aside className="fixed inset-y-0 left-0 z-40 hidden w-60 flex-col border-r border-[#1a1a1a] bg-[#0d0d0d] text-[#ededed] lg:flex">
         <div className="flex h-14 items-center gap-2.5 border-b border-[#1a1a1a] px-4">
-          <div className="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white p-0.5 shadow-xs">
-            <img src={logo} alt="CreatorIQ" className="h-full w-full object-contain" />
-          </div>
-          <div className="flex items-center gap-1.5">
-            <span className="font-sora text-sm font-semibold tracking-tight text-white">
-              CreatorIQ
-            </span>
-            <span className="rounded bg-[#1a1a1a] px-1.5 py-0.5 text-[9px] font-medium text-neutral-400 border border-[#2a2a2a]">
-              AI
-            </span>
-          </div>
+          <Link to="/" className="flex items-center gap-2.5 hover:opacity-85 transition-opacity" title="Back to Home">
+            <div className="flex h-7 w-7 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-pure-white p-0.5 shadow-xs">
+              <img src={logo} alt="CreatorIQ" className="h-full w-full object-contain" />
+            </div>
+            <div className="flex items-center gap-1.5">
+              <span className="font-sora text-sm font-semibold tracking-tight text-white">
+                CreatorIQ
+              </span>
+              <span className="rounded bg-[#1a1a1a] px-1.5 py-0.5 text-[9px] font-medium text-neutral-400 border border-[#2a2a2a]">
+                AI
+              </span>
+            </div>
+          </Link>
         </div>
         <SidebarNav />
         <div className="border-t border-[#1a1a1a] p-3">
@@ -126,12 +128,12 @@ export const MainLayout: React.FC = () => {
           />
           <aside className="absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col bg-[#0d0d0d] text-white shadow-2xl border-r border-[#1a1a1a]">
             <div className="flex h-14 items-center justify-between border-b border-[#1a1a1a] px-4">
-              <div className="flex items-center gap-2.5">
-                <div className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-lg bg-white p-0.5">
+              <Link to="/" onClick={() => setMobileOpen(false)} className="flex items-center gap-2.5 hover:opacity-85 transition-opacity" title="Back to Home">
+                <div className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-lg bg-pure-white p-0.5">
                   <img src={logo} alt="CreatorIQ" className="h-full w-full object-contain" />
                 </div>
                 <span className="font-sora text-sm font-semibold text-white">CreatorIQ</span>
-              </div>
+              </Link>
               <button
                 type="button"
                 onClick={() => setMobileOpen(false)}

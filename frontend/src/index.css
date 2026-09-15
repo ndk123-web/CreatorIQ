@@ -15,20 +15,6 @@
 
   --color-accent-500: #06b6d4;
 
-  /* Dark Neutral Palette */
-  --color-neutral-950: #0a0a0a;
-  --color-neutral-900: #121212;
-  --color-neutral-850: #161616;
-  --color-neutral-800: #1f1f1f;
-  --color-neutral-700: #2a2a2a;
-  --color-neutral-600: #404040;
-  --color-neutral-500: #71717a;
-  --color-neutral-400: #a1a1aa;
-  --color-neutral-300: #d4d4d8;
-  --color-neutral-200: #e4e4e7;
-  --color-neutral-100: #f4f4f5;
-  --color-neutral-50: #fafafa;
-
   /* Status Tokens */
   --color-success-600: #16a34a;
   --color-success-500: #22c55e;
@@ -63,9 +49,14 @@
   --text-muted: #71717a;
 }
 
+html, body, #root {
+  background-color: #0a0a0a !important;
+  color: #ededed !important;
+}
+
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-sora);
-  color: #f4f4f5;
+  color: #f4f4f5 !important;
 }
 
 .metric {
@@ -79,20 +70,128 @@ h1, h2, h3, h4, h5, h6 {
 body {
   margin: 0;
   min-height: 100vh;
-  background-color: #0a0a0a;
-  color: #ededed;
+  background-color: #0a0a0a !important;
+  color: #ededed !important;
   overflow-x: hidden;
+}
+
+/* ==========================================================================
+   PURE DARK MODE THEME OVERRIDES
+   Guarantees high-contrast text, sleek dark boxes, and dark backgrounds
+   across every single page, form, and modal.
+   ========================================================================== */
+
+/* Typography High-Contrast in Dark Theme */
+.text-neutral-950,
+.text-neutral-900,
+.text-neutral-800 {
+  color: #ededed !important;
+}
+
+.text-neutral-700 {
+  color: #d4d4d8 !important;
+}
+
+.text-neutral-600 {
+  color: #a1a1aa !important;
+}
+
+.text-neutral-500 {
+  color: #8e8e93 !important;
+}
+
+.text-neutral-400 {
+  color: #a1a1aa !important;
+}
+
+.text-white {
+  color: #ffffff !important;
+}
+
+/* Input Fields & Textareas */
+input, select, textarea {
+  color: #ededed !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #52525b !important;
+}
+
+/* Surface Background Dark Overrides */
+.bg-white {
+  background-color: #121212 !important;
+}
+
+.bg-white\/95,
+.bg-white\/90,
+.bg-white\/80 {
+  background-color: rgba(18, 18, 18, 0.95) !important;
+}
+
+.bg-neutral-50 {
+  background-color: #141414 !important;
+}
+
+.bg-neutral-50\/80,
+.bg-neutral-50\/50,
+.bg-neutral-50\/30 {
+  background-color: rgba(20, 20, 20, 0.8) !important;
+}
+
+.bg-neutral-100 {
+  background-color: #181818 !important;
+}
+
+.bg-neutral-100\/80,
+.bg-neutral-100\/60 {
+  background-color: rgba(24, 24, 24, 0.8) !important;
+}
+
+.bg-neutral-200 {
+  background-color: #222222 !important;
+}
+
+/* Pure White Utility for Brand Logo Container */
+.bg-pure-white {
+  background-color: #ffffff !important;
+}
+
+/* Borders in Dark Theme */
+.border-neutral-100,
+.border-neutral-200,
+.border-neutral-300 {
+  border-color: #262626 !important;
+}
+
+.border-neutral-200\/80,
+.border-neutral-200\/60 {
+  border-color: rgba(38, 38, 38, 0.8) !important;
+}
+
+.divide-neutral-200 > :not([hidden]) ~ :not([hidden]),
+.divide-neutral-100 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #262626 !important;
+}
+
+/* Mesh Gradient Dark Background */
+.mesh-gradient {
+  background-color: #0a0a0a !important;
+  background-image: 
+    radial-gradient(at 15% 15%, rgba(99, 102, 241, 0.08) 0px, transparent 50%),
+    radial-gradient(at 85% 85%, rgba(6, 182, 212, 0.05) 0px, transparent 50%) !important;
+  color: #ededed !important;
 }
 
 /* App shell */
 .app-shell {
   min-height: 100vh;
-  background-color: #0a0a0a;
+  background-color: #0a0a0a !important;
 }
 
 .app-main {
   min-height: 100vh;
-  background-color: #0a0a0a;
+  background-color: #0a0a0a !important;
 }
 
 /* Dark Minimal Scrollbar */
@@ -117,42 +216,42 @@ body {
 
 /* Dark surfaces */
 .surface-app {
-  background-color: #0a0a0a;
+  background-color: #0a0a0a !important;
 }
 
 .surface-glass {
-  background: rgba(13, 13, 13, 0.88);
+  background: rgba(13, 13, 13, 0.88) !important;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid #1f1f1f;
+  border-bottom: 1px solid #1f1f1f !important;
 }
 
 .surface-card {
-  background-color: #121212;
-  border: 1px solid #222222;
-  color: #ededed;
+  background-color: #121212 !important;
+  border: 1px solid #222222 !important;
+  color: #ededed !important;
 }
 
 .surface-card-elevated {
-  background-color: #161616;
-  border: 1px solid #262626;
+  background-color: #161616 !important;
+  border: 1px solid #262626 !important;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.45);
-  color: #ededed;
+  color: #ededed !important;
   transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
 .surface-card-elevated:hover {
-  border-color: #383838;
+  border-color: #383838 !important;
 }
 
 .surface-dark {
-  background-color: #141414;
-  border: 1px solid #262626;
-  color: #ededed;
+  background-color: #141414 !important;
+  border: 1px solid #262626 !important;
+  color: #ededed !important;
 }
 
 .text-gradient-brand {
-  color: #f4f4f5;
+  color: #f4f4f5 !important;
 }
 
 .btn-primary-glow {
@@ -177,13 +276,13 @@ body {
 }
 
 .glass {
-  background: #141414;
-  border: 1px solid #262626;
+  background: #141414 !important;
+  border: 1px solid #262626 !important;
 }
 
 .glass-dark {
-  background: #121212;
-  border: 1px solid #222222;
+  background: #121212 !important;
+  border: 1px solid #222222 !important;
 }
 
 .premium-shadow-hover {
@@ -191,7 +290,7 @@ body {
 }
 
 .premium-shadow-hover:hover {
-  border-color: #333333;
+  border-color: #333333 !important;
 }
 
 @keyframes shimmer {
@@ -217,3 +316,4 @@ body {
 .fade-in {
   animation: fade-in 0.15s ease-out;
 }
+
